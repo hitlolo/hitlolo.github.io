@@ -1,0 +1,798 @@
+<div style="background-color: rgb(255, 255, 255); font-family: 'Lucida Grande', 'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', 'Lucida Sans Unicode', Helvetica, Arial, sans-serif; font-size: 0.9em; overflow-x: hidden; overflow-y: auto; margin: 0px !important; padding: 5px 20px 26px !important;padding: 20px;padding: 20px; color: rgb(255, 255, 255); font-size: 15px; font-family: 'Open Sans', AppleSDGothicNeo-Medium, 'Segoe UI', 'Malgun Gothic', sans-serif; background-color: rgb(92, 81, 70); -webkit-font-smoothing: antialiased; background-position: initial initial; background-repeat: initial initial;">
+  <pre style="border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; word-break: break-all; word-wrap: break-word; overflow: auto;"><code class="cpp hljs" data-origin="&lt;pre&gt;&lt;code class=&quot;cpp&quot;&gt;// @interface NSObject(MyObject)
+
+// - (void)sayHello;
+
+/* @end */
+
+
+// @implementation NSObject(MyObject)
+
+
+static void _I_NSObject_MyObject_sayHello(NSObject * self, SEL _cmd) {
+    NSLog((NSString *)&amp;amp;__NSConstantStringImpl__var_folders_0l_q8gjlrgs52g9nlmh54hhnnyh0000gn_T_main_907609_mi_0);
+}
+
+// @end
+
+// @protocol sayAgain &amp;lt;NSObject&amp;gt;
+
+// - (void)sayHelloAgain;
+
+/* @end */
+
+
+
+#ifndef _REWRITER_typedef_People
+#define _REWRITER_typedef_People
+typedef struct objc_object People;
+typedef struct {} _objc_exc_People;
+#endif
+
+extern &quot;C&quot; unsigned long OBJC_IVAR_$_People$sum;
+struct People_IMPL {
+    struct NSObject_IMPL NSObject_IVARS;
+    int sum;
+};
+
+// + (void)hello;
+// - (void)hello;
+
+/* @end */
+
+// @implementation People
+
+static void _C_People_hello(Class self, SEL _cmd) {
+    NSLog((NSString *)&amp;amp;__NSConstantStringImpl__var_folders_0l_q8gjlrgs52g9nlmh54hhnnyh0000gn_T_main_907609_mi_1);
+}
+
+static void _I_People_hello(People * self, SEL _cmd) {
+    (*(int *)((char *)self + OBJC_IVAR_$_People$sum)) = (10) * (10);
+    ((void(*)(id, SEL))(void *)objc_msgSend)((id)self, sel_registerName(&quot;sayHello&quot;));
+    NSLog((NSString *)&amp;amp;__NSConstantStringImpl__var_folders_0l_q8gjlrgs52g9nlmh54hhnnyh0000gn_T_main_907609_mi_2, (*(int *)((char *)self + OBJC_IVAR_$_People$sum)));
+}
+
+
+static void _I_People_sayHelloAgain(People * self, SEL _cmd) {
+    ((void(*)(id, SEL))(void *)objc_msgSend)((id)self, sel_registerName(&quot;hello&quot;));
+}
+// @end
+
+int main(int argc, const char * argv[]) {
+    /* @autoreleasepool */ { __AtAutoreleasePool __autoreleasepool;
+
+    id jackson = ((People *(*)(id, SEL))(void *)objc_msgSend)((id)((People *(*)(id, SEL))(void *)objc_msgSend)((id)objc_getClass(&quot;People&quot;), sel_registerName(&quot;alloc&quot;)), sel_registerName(&quot;init&quot;));
+    ((void(*)(id, SEL))(void *)objc_msgSend)((id)objc_getClass(&quot;People&quot;), sel_registerName(&quot;hello&quot;));
+    ((void(*)(id, SEL))(void *)objc_msgSend)((id)jackson, sel_registerName(&quot;hello&quot;));
+    ((void(*)(id, SEL))(void *)objc_msgSend)((id)jackson, sel_registerName(&quot;sayHelloAgain&quot;));
+    }
+    return 0;
+}
+
+struct _prop_t {
+    const char *name;
+    const char *attributes;
+};
+
+struct _protocol_t;
+
+struct _objc_method {
+    struct objc_selector * _cmd;
+    const char *method_type;
+    void  *_imp;
+};
+
+struct _protocol_t {
+    void * isa;  // NULL
+    const char *protocol_name;
+    const struct _protocol_list_t * protocol_list; // super protocols
+    const struct method_list_t *instance_methods;
+    const struct method_list_t *class_methods;
+    const struct method_list_t *optionalInstanceMethods;
+    const struct method_list_t *optionalClassMethods;
+    const struct _prop_list_t * properties;
+    const unsigned int size;  // sizeof(struct _protocol_t)
+    const unsigned int flags;  // = 0
+    const char ** extendedMethodTypes;
+};
+
+struct _ivar_t {
+    unsigned long int *offset;  // pointer to ivar offset location
+    const char *name;
+    const char *type;
+    unsigned int alignment;
+    unsigned int  size;
+};
+
+struct _class_ro_t {
+    unsigned int flags;
+    unsigned int instanceStart;
+    unsigned int instanceSize;
+    unsigned int reserved;
+    const unsigned char *ivarLayout;
+    const char *name;
+    const struct _method_list_t *baseMethods;
+    const struct _objc_protocol_list *baseProtocols;
+    const struct _ivar_list_t *ivars;
+    const unsigned char *weakIvarLayout;
+    const struct _prop_list_t *properties;
+};
+
+struct _class_t {
+    struct _class_t *isa;
+    struct _class_t *superclass;
+    void *cache;
+    void *vtable;
+    struct _class_ro_t *ro;
+};
+
+struct _category_t {
+    const char *name;
+    struct _class_t *cls;
+    const struct _method_list_t *instance_methods;
+    const struct _method_list_t *class_methods;
+    const struct _protocol_list_t *protocols;
+    const struct _prop_list_t *properties;
+};
+extern &quot;C&quot; __declspec(dllimport) struct objc_cache _objc_empty_cache;
+#pragma warning(disable:4273)
+
+extern &quot;C&quot; unsigned long int OBJC_IVAR_$_People$sum __attribute__((used, section(&quot;__DATA,__objc_ivar&quot;))) = __OFFSETOFIVAR__(struct People, sum);
+
+static struct /*_ivar_list_t*/ {
+    unsigned int entsize;  // sizeof(struct _prop_t)
+    unsigned int count;
+    struct _ivar_t ivar_list[1];
+} _OBJC_$_INSTANCE_VARIABLES_People __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    sizeof(_ivar_t),
+    1,
+    { { (unsigned long int *)&amp;amp;OBJC_IVAR_$_People$sum, &quot;sum&quot;, &quot;i&quot;, 2, 4 } }
+};
+
+static struct /*_method_list_t*/ {
+    unsigned int entsize;  // sizeof(struct _objc_method)
+    unsigned int method_count;
+    struct _objc_method method_list[2];
+} _OBJC_$_INSTANCE_METHODS_People __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    sizeof(_objc_method),
+    2,
+    { { (struct objc_selector *)&quot;hello&quot;, &quot;v16@0:8&quot;, (void *)_I_People_hello },
+    { (struct objc_selector *)&quot;sayHelloAgain&quot;, &quot;v16@0:8&quot;, (void *)_I_People_sayHelloAgain } }
+};
+
+static struct /*_method_list_t*/ {
+    unsigned int entsize;  // sizeof(struct _objc_method)
+    unsigned int method_count;
+    struct _objc_method method_list[1];
+} _OBJC_$_CLASS_METHODS_People __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    sizeof(_objc_method),
+    1,
+    { { (struct objc_selector *)&quot;hello&quot;, &quot;v16@0:8&quot;, (void *)_C_People_hello } }
+};
+
+static const char *_OBJC_PROTOCOL_METHOD_TYPES_NSObject[] __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) =
+{
+    &quot;c24@0:8@16&quot;,
+    &quot;#16@0:8&quot;,
+    &quot;@16@0:8&quot;,
+    &quot;@24@0:8:16&quot;,
+    &quot;@32@0:8:16@24&quot;,
+    &quot;@40@0:8:16@24@32&quot;,
+    &quot;c16@0:8&quot;,
+    &quot;c24@0:8#16&quot;,
+    &quot;c24@0:8#16&quot;,
+    &quot;c24@0:8@\&quot;Protocol\&quot;16&quot;,
+    &quot;c24@0:8:16&quot;,
+    &quot;@16@0:8&quot;,
+    &quot;Vv16@0:8&quot;,
+    &quot;@16@0:8&quot;,
+    &quot;Q16@0:8&quot;,
+    &quot;^{_NSZone=}16@0:8&quot;,
+    &quot;Q16@0:8&quot;,
+    &quot;#16@0:8&quot;,
+    &quot;@\&quot;NSString\&quot;16@0:8&quot;,
+    &quot;@\&quot;NSString\&quot;16@0:8&quot;
+};
+
+static struct /*_method_list_t*/ {
+    unsigned int entsize;  // sizeof(struct _objc_method)
+    unsigned int method_count;
+    struct _objc_method method_list[19];
+} _OBJC_PROTOCOL_INSTANCE_METHODS_NSObject __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    sizeof(_objc_method),
+    19,
+    { { (struct objc_selector *)&quot;isEqual:&quot;, &quot;c24@0:8@16&quot;, 0 },
+    { (struct objc_selector *)&quot;class&quot;, &quot;#16@0:8&quot;, 0 },
+    { (struct objc_selector *)&quot;self&quot;, &quot;@16@0:8&quot;, 0 },
+    { (struct objc_selector *)&quot;performSelector:&quot;, &quot;@24@0:8:16&quot;, 0 },
+    { (struct objc_selector *)&quot;performSelector:withObject:&quot;, &quot;@32@0:8:16@24&quot;, 0 },
+    { (struct objc_selector *)&quot;performSelector:withObject:withObject:&quot;, &quot;@40@0:8:16@24@32&quot;, 0 },
+    { (struct objc_selector *)&quot;isProxy&quot;, &quot;c16@0:8&quot;, 0 },
+    { (struct objc_selector *)&quot;isKindOfClass:&quot;, &quot;c24@0:8#16&quot;, 0 },
+    { (struct objc_selector *)&quot;isMemberOfClass:&quot;, &quot;c24@0:8#16&quot;, 0 },
+    { (struct objc_selector *)&quot;conformsToProtocol:&quot;, &quot;c24@0:8@16&quot;, 0 },
+    { (struct objc_selector *)&quot;respondsToSelector:&quot;, &quot;c24@0:8:16&quot;, 0 },
+    { (struct objc_selector *)&quot;retain&quot;, &quot;@16@0:8&quot;, 0 },
+    { (struct objc_selector *)&quot;release&quot;, &quot;Vv16@0:8&quot;, 0 },
+    { (struct objc_selector *)&quot;autorelease&quot;, &quot;@16@0:8&quot;, 0 },
+    { (struct objc_selector *)&quot;retainCount&quot;, &quot;Q16@0:8&quot;, 0 },
+    { (struct objc_selector *)&quot;zone&quot;, &quot;^{_NSZone=}16@0:8&quot;, 0 },
+    { (struct objc_selector *)&quot;hash&quot;, &quot;Q16@0:8&quot;, 0 },
+    { (struct objc_selector *)&quot;superclass&quot;, &quot;#16@0:8&quot;, 0 },
+    { (struct objc_selector *)&quot;description&quot;, &quot;@16@0:8&quot;, 0 } }
+};
+
+static struct /*_method_list_t*/ {
+    unsigned int entsize;  // sizeof(struct _objc_method)
+    unsigned int method_count;
+    struct _objc_method method_list[1];
+} _OBJC_PROTOCOL_OPT_INSTANCE_METHODS_NSObject __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    sizeof(_objc_method),
+    1,
+    { { (struct objc_selector *)&quot;debugDescription&quot;, &quot;@16@0:8&quot;, 0 } }
+};
+
+static struct /*_prop_list_t*/ {
+    unsigned int entsize;  // sizeof(struct _prop_t)
+    unsigned int count_of_properties;
+    struct _prop_t prop_list[4];
+} _OBJC_PROTOCOL_PROPERTIES_NSObject __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    sizeof(_prop_t),
+    4,
+    { { &quot;hash&quot;, &quot;TQ,R&quot; },
+    { &quot;superclass&quot;, &quot;T#,R&quot; },
+    { &quot;description&quot;, &quot;T@\&quot;NSString\&quot;,R,C&quot; },
+    { &quot;debugDescription&quot;, &quot;T@\&quot;NSString\&quot;,R,C&quot; } }
+};
+
+struct _protocol_t _OBJC_PROTOCOL_NSObject __attribute__((used, section(&quot;__DATA,__datacoal_nt,coalesced&quot;))) = {
+    0,
+    &quot;NSObject&quot;,
+    0,
+    (const struct method_list_t *)&amp;amp;_OBJC_PROTOCOL_INSTANCE_METHODS_NSObject,
+    0,
+    (const struct method_list_t *)&amp;amp;_OBJC_PROTOCOL_OPT_INSTANCE_METHODS_NSObject,
+    0,
+    (const struct _prop_list_t *)&amp;amp;_OBJC_PROTOCOL_PROPERTIES_NSObject,
+    sizeof(_protocol_t),
+    0,
+    (const char **)&amp;amp;_OBJC_PROTOCOL_METHOD_TYPES_NSObject
+};
+struct _protocol_t *_OBJC_LABEL_PROTOCOL_$_NSObject = &amp;amp;_OBJC_PROTOCOL_NSObject;
+
+static const char *_OBJC_PROTOCOL_METHOD_TYPES_sayAgain[] __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) =
+{
+    &quot;v16@0:8&quot;
+};
+
+static struct /*_protocol_list_t*/ {
+    long protocol_count;  // Note, this is 32/64 bit
+    struct _protocol_t *super_protocols[1];
+} _OBJC_PROTOCOL_REFS_sayAgain __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    1,
+    &amp;amp;_OBJC_PROTOCOL_NSObject
+};
+
+static struct /*_method_list_t*/ {
+    unsigned int entsize;  // sizeof(struct _objc_method)
+    unsigned int method_count;
+    struct _objc_method method_list[1];
+} _OBJC_PROTOCOL_INSTANCE_METHODS_sayAgain __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    sizeof(_objc_method),
+    1,
+    { { (struct objc_selector *)&quot;sayHelloAgain&quot;, &quot;v16@0:8&quot;, 0 } }
+};
+
+struct _protocol_t _OBJC_PROTOCOL_sayAgain __attribute__((used, section(&quot;__DATA,__datacoal_nt,coalesced&quot;))) = {
+    0,
+    &quot;sayAgain&quot;,
+    (const struct _protocol_list_t *)&amp;amp;_OBJC_PROTOCOL_REFS_sayAgain,
+    (const struct method_list_t *)&amp;amp;_OBJC_PROTOCOL_INSTANCE_METHODS_sayAgain,
+    0,
+    0,
+    0,
+    0,
+    sizeof(_protocol_t),
+    0,
+    (const char **)&amp;amp;_OBJC_PROTOCOL_METHOD_TYPES_sayAgain
+};
+struct _protocol_t *_OBJC_LABEL_PROTOCOL_$_sayAgain = &amp;amp;_OBJC_PROTOCOL_sayAgain;
+
+static struct /*_protocol_list_t*/ {
+    long protocol_count;  // Note, this is 32/64 bit
+    struct _protocol_t *super_protocols[1];
+} _OBJC_CLASS_PROTOCOLS_$_People __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    1,
+    &amp;amp;_OBJC_PROTOCOL_sayAgain
+};
+
+static struct _class_ro_t _OBJC_METACLASS_RO_$_People __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    1, sizeof(struct _class_t), sizeof(struct _class_t),
+    (unsigned int)0,
+    0,
+    &quot;People&quot;,
+    (const struct _method_list_t *)&amp;amp;_OBJC_$_CLASS_METHODS_People,
+    0,
+    0,
+    0,
+    0,
+};
+
+static struct _class_ro_t _OBJC_CLASS_RO_$_People __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    0, __OFFSETOFIVAR__(struct People, sum), sizeof(struct People_IMPL),
+    (unsigned int)0,
+    0,
+    &quot;People&quot;,
+    (const struct _method_list_t *)&amp;amp;_OBJC_$_INSTANCE_METHODS_People,
+    (const struct _objc_protocol_list *)&amp;amp;_OBJC_CLASS_PROTOCOLS_$_People,
+    (const struct _ivar_list_t *)&amp;amp;_OBJC_$_INSTANCE_VARIABLES_People,
+    0,
+    0,
+};
+
+extern &quot;C&quot; __declspec(dllimport) struct _class_t OBJC_METACLASS_$_NSObject;
+
+extern &quot;C&quot; __declspec(dllexport) struct _class_t OBJC_METACLASS_$_People __attribute__((used, section(&quot;__DATA,__objc_data&quot;))) = {
+    0, // &amp;amp;OBJC_METACLASS_$_NSObject,
+    0, // &amp;amp;OBJC_METACLASS_$_NSObject,
+    0, // (void *)&amp;amp;_objc_empty_cache,
+    0, // unused, was (void *)&amp;amp;_objc_empty_vtable,
+    &amp;amp;_OBJC_METACLASS_RO_$_People,
+};
+
+extern &quot;C&quot; __declspec(dllimport) struct _class_t OBJC_CLASS_$_NSObject;
+
+extern &quot;C&quot; __declspec(dllexport) struct _class_t OBJC_CLASS_$_People __attribute__((used, section(&quot;__DATA,__objc_data&quot;))) = {
+    0, // &amp;amp;OBJC_METACLASS_$_People,
+    0, // &amp;amp;OBJC_CLASS_$_NSObject,
+    0, // (void *)&amp;amp;_objc_empty_cache,
+    0, // unused, was (void *)&amp;amp;_objc_empty_vtable,
+    &amp;amp;_OBJC_CLASS_RO_$_People,
+};
+static void OBJC_CLASS_SETUP_$_People(void) {
+    OBJC_METACLASS_$_People.isa = &amp;amp;OBJC_METACLASS_$_NSObject;
+    OBJC_METACLASS_$_People.superclass = &amp;amp;OBJC_METACLASS_$_NSObject;
+    OBJC_METACLASS_$_People.cache = &amp;amp;_objc_empty_cache;
+    OBJC_CLASS_$_People.isa = &amp;amp;OBJC_METACLASS_$_People;
+    OBJC_CLASS_$_People.superclass = &amp;amp;OBJC_CLASS_$_NSObject;
+    OBJC_CLASS_$_People.cache = &amp;amp;_objc_empty_cache;
+}
+#pragma section(&quot;.objc_inithooks$B&quot;, long, read, write)
+__declspec(allocate(&quot;.objc_inithooks$B&quot;)) static void *OBJC_CLASS_SETUP[] = {
+    (void *)&amp;amp;OBJC_CLASS_SETUP_$_People,
+};
+
+static struct /*_method_list_t*/ {
+    unsigned int entsize;  // sizeof(struct _objc_method)
+    unsigned int method_count;
+    struct _objc_method method_list[1];
+} _OBJC_$_CATEGORY_INSTANCE_METHODS_NSObject_$_MyObject __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) = {
+    sizeof(_objc_method),
+    1,
+    { { (struct objc_selector *)&quot;sayHello&quot;, &quot;v16@0:8&quot;, (void *)_I_NSObject_MyObject_sayHello } }
+};
+
+extern &quot;C&quot; __declspec(dllimport) struct _class_t OBJC_CLASS_$_NSObject;
+
+static struct _category_t _OBJC_$_CATEGORY_NSObject_$_MyObject __attribute__((used, section(&quot;__DATA,__objc_const&quot;))) =
+{
+    &quot;NSObject&quot;,
+    0, // &amp;amp;OBJC_CLASS_$_NSObject,
+    (const struct _method_list_t *)&amp;amp;_OBJC_$_CATEGORY_INSTANCE_METHODS_NSObject_$_MyObject,
+    0,
+    0,
+    0,
+};
+static void OBJC_CATEGORY_SETUP_$_NSObject_$_MyObject(void) {
+    _OBJC_$_CATEGORY_NSObject_$_MyObject.cls = &amp;amp;OBJC_CLASS_$_NSObject;
+}
+#pragma section(&quot;.objc_inithooks$B&quot;, long, read, write)
+__declspec(allocate(&quot;.objc_inithooks$B&quot;)) static void *OBJC_CATEGORY_SETUP[] = {
+    (void *)&amp;amp;OBJC_CATEGORY_SETUP_$_NSObject_$_MyObject,
+};
+static struct _class_t *L_OBJC_LABEL_CLASS_$[1] __attribute__((used, section(&quot;__DATA, __objc_classlist,regular,no_dead_strip&quot;))) = {
+    &amp;amp;OBJC_CLASS_$_People,
+};
+static struct _category_t *L_OBJC_LABEL_CATEGORY_$[1] __attribute__((used, section(&quot;__DATA, __objc_catlist,regular,no_dead_strip&quot;))) = {
+    &amp;amp;_OBJC_$_CATEGORY_NSObject_$_MyObject,
+};
+static struct IMAGE_INFO { unsigned version; unsigned flag; } _OBJC_IMAGE_INFO = { 0, 2 };
+&lt;/code&gt;&lt;/pre&gt;" style="display: block;border: 1px solid rgb(204, 204, 204); white-space: pre; padding: 0.5em; margin: 0px;border-top-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px; border-bottom-left-radius: 3px; word-break: break-all; word-wrap: break-word; border: 1px solid rgb(204, 204, 204); padding: 0px 5px; margin: 0px 2px;font-size: 1em; font-family: 'Open Sans', AppleSDGothicNeo-Medium, 'Segoe UI', 'Malgun Gothic', sans-serif; letter-spacing: -1px; font-weight: normal;display: block; overflow-x: auto; background-color: black; color: rgb(234, 234, 234); padding: 0.5em; background-position: initial initial; background-repeat: initial initial;"><span class="hljs-comment" style="color: rgb(150, 152, 150);">// @interface NSObject(MyObject)</span>
+
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">// - (void)sayHello;</span>
+
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">/* @end */</span>
+
+
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">// @implementation NSObject(MyObject)</span>
+
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> _I_NSObject_MyObject_sayHello(NSObject * self, SEL _cmd) {
+    NSLog((NSString *)&amp;__NSConstantStringImpl__var_folders_0l_q8gjlrgs52g9nlmh54hhnnyh0000gn_T_main_907609_mi_0);
+}
+
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">// @end</span>
+
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">// @protocol sayAgain &lt;NSObject&gt;</span>
+
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">// - (void)sayHelloAgain;</span>
+
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">/* @end */</span>
+
+
+
+<span class="hljs-preprocessor" style="color: rgb(231, 140, 69);">#ifndef _REWRITER_typedef_People</span>
+<span class="hljs-preprocessor" style="color: rgb(231, 140, 69);">#<span class="hljs-keyword" style="color: rgb(195, 151, 216);">define</span> _REWRITER_typedef_People</span>
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">typedef</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_object People;
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">typedef</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> {} _objc_exc_People;
+<span class="hljs-preprocessor" style="color: rgb(231, 140, 69);">#<span class="hljs-keyword" style="color: rgb(195, 151, 216);">endif</span></span>
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">extern</span> <span class="hljs-string" style="color: rgb(185, 202, 74);">"C"</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">long</span> OBJC_IVAR_$_People$sum;
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> People_IMPL {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> NSObject_IMPL NSObject_IVARS;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> sum;
+};
+
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">// + (void)hello;</span>
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">// - (void)hello;</span>
+
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">/* @end */</span>
+
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">// @implementation People</span>
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> _C_People_hello(Class self, SEL _cmd) {
+    NSLog((NSString *)&amp;__NSConstantStringImpl__var_folders_0l_q8gjlrgs52g9nlmh54hhnnyh0000gn_T_main_907609_mi_1);
+}
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> _I_People_hello(People * self, SEL _cmd) {
+    (*(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> *)((<span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *)self + OBJC_IVAR_$_People$sum)) = (<span class="hljs-number" style="color: rgb(231, 140, 69);">10</span>) * (<span class="hljs-number" style="color: rgb(231, 140, 69);">10</span>);
+    ((<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span>(*)(id, SEL))(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)objc_msgSend)((id)self, sel_registerName(<span class="hljs-string" style="color: rgb(185, 202, 74);">"sayHello"</span>));
+    NSLog((NSString *)&amp;__NSConstantStringImpl__var_folders_0l_q8gjlrgs52g9nlmh54hhnnyh0000gn_T_main_907609_mi_2, (*(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> *)((<span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *)self + OBJC_IVAR_$_People$sum)));
+}
+
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> _I_People_sayHelloAgain(People * self, SEL _cmd) {
+    ((<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span>(*)(id, SEL))(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)objc_msgSend)((id)self, sel_registerName(<span class="hljs-string" style="color: rgb(185, 202, 74);">"hello"</span>));
+}
+<span class="hljs-comment" style="color: rgb(150, 152, 150);">// @end</span>
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> main(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> argc, <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> * argv[]) {
+    <span class="hljs-comment" style="color: rgb(150, 152, 150);">/* @autoreleasepool */</span> { __AtAutoreleasePool __autoreleasepool;
+
+    id jackson = ((People *(*)(id, SEL))(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)objc_msgSend)((id)((People *(*)(id, SEL))(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)objc_msgSend)((id)objc_getClass(<span class="hljs-string" style="color: rgb(185, 202, 74);">"People"</span>), sel_registerName(<span class="hljs-string" style="color: rgb(185, 202, 74);">"alloc"</span>)), sel_registerName(<span class="hljs-string" style="color: rgb(185, 202, 74);">"init"</span>));
+    ((<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span>(*)(id, SEL))(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)objc_msgSend)((id)objc_getClass(<span class="hljs-string" style="color: rgb(185, 202, 74);">"People"</span>), sel_registerName(<span class="hljs-string" style="color: rgb(185, 202, 74);">"hello"</span>));
+    ((<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span>(*)(id, SEL))(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)objc_msgSend)((id)jackson, sel_registerName(<span class="hljs-string" style="color: rgb(185, 202, 74);">"hello"</span>));
+    ((<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span>(*)(id, SEL))(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)objc_msgSend)((id)jackson, sel_registerName(<span class="hljs-string" style="color: rgb(185, 202, 74);">"sayHelloAgain"</span>));
+    }
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">return</span> <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>;
+}
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _prop_t {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *name;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *attributes;
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _protocol_t;
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _objc_method {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector * _cmd;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *method_type;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span>  *_imp;
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _protocol_t {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> * isa;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// NULL</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *protocol_name;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _protocol_list_t * protocol_list; <span class="hljs-comment" style="color: rgb(150, 152, 150);">// super protocols</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> method_list_t *instance_methods;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> method_list_t *class_methods;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> method_list_t *optionalInstanceMethods;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> method_list_t *optionalClassMethods;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _prop_list_t * properties;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> size;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// sizeof(struct _protocol_t)</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> flags;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// = 0</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> ** extendedMethodTypes;
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _ivar_t {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">long</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> *offset;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// pointer to ivar offset location</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *name;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *type;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> alignment;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span>  size;
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_ro_t {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> flags;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> instanceStart;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> instanceSize;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> reserved;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *ivarLayout;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *name;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _method_list_t *baseMethods;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _objc_protocol_list *baseProtocols;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _ivar_list_t *ivars;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *weakIvarLayout;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _prop_list_t *properties;
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t *isa;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t *superclass;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *cache;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *vtable;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_ro_t *ro;
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _category_t {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *name;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t *cls;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _method_list_t *instance_methods;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _method_list_t *class_methods;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _protocol_list_t *protocols;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _prop_list_t *properties;
+};
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">extern</span> <span class="hljs-string" style="color: rgb(185, 202, 74);">"C"</span> __declspec(dllimport) <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_cache _objc_empty_cache;
+<span class="hljs-preprocessor" style="color: rgb(231, 140, 69);">#<span class="hljs-keyword" style="color: rgb(195, 151, 216);">pragma</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">warning</span>(disable:4273)</span>
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">extern</span> <span class="hljs-string" style="color: rgb(185, 202, 74);">"C"</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">long</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> OBJC_IVAR_$_People$sum __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_ivar"</span>))) = __OFFSETOFIVAR__(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> People, sum);
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> <span class="hljs-comment" style="color: rgb(150, 152, 150);">/*_ivar_list_t*/</span> {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> entsize;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// sizeof(struct _prop_t)</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> count;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _ivar_t ivar_list[<span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>];
+} _OBJC_$_INSTANCE_VARIABLES_People __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(_ivar_t),
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>,
+    { { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">long</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> *)&amp;OBJC_IVAR_$_People$sum, <span class="hljs-string" style="color: rgb(185, 202, 74);">"sum"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"i"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">2</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">4</span> } }
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> <span class="hljs-comment" style="color: rgb(150, 152, 150);">/*_method_list_t*/</span> {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> entsize;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// sizeof(struct _objc_method)</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> method_count;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _objc_method method_list[<span class="hljs-number" style="color: rgb(231, 140, 69);">2</span>];
+} _OBJC_$_INSTANCE_METHODS_People __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(_objc_method),
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">2</span>,
+    { { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"hello"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"v16@0:8"</span>, (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)_I_People_hello },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"sayHelloAgain"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"v16@0:8"</span>, (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)_I_People_sayHelloAgain } }
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> <span class="hljs-comment" style="color: rgb(150, 152, 150);">/*_method_list_t*/</span> {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> entsize;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// sizeof(struct _objc_method)</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> method_count;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _objc_method method_list[<span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>];
+} _OBJC_$_CLASS_METHODS_People __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(_objc_method),
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>,
+    { { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"hello"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"v16@0:8"</span>, (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)_C_People_hello } }
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *_OBJC_PROTOCOL_METHOD_TYPES_NSObject[] __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) =
+{
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"c24@0:8@16"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"#16@0:8"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"@16@0:8"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"@24@0:8:16"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"@32@0:8:16@24"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"@40@0:8:16@24@32"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"c16@0:8"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"c24@0:8#16"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"c24@0:8#16"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"c24@0:8@\"Protocol\"16"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"c24@0:8:16"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"@16@0:8"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"Vv16@0:8"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"@16@0:8"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"Q16@0:8"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"^{_NSZone=}16@0:8"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"Q16@0:8"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"#16@0:8"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"@\"NSString\"16@0:8"</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"@\"NSString\"16@0:8"</span>
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> <span class="hljs-comment" style="color: rgb(150, 152, 150);">/*_method_list_t*/</span> {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> entsize;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// sizeof(struct _objc_method)</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> method_count;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _objc_method method_list[<span class="hljs-number" style="color: rgb(231, 140, 69);">19</span>];
+} _OBJC_PROTOCOL_INSTANCE_METHODS_NSObject __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(_objc_method),
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">19</span>,
+    { { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"isEqual:"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"c24@0:8@16"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"class"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"#16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"self"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"@16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"performSelector:"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"@24@0:8:16"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"performSelector:withObject:"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"@32@0:8:16@24"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"performSelector:withObject:withObject:"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"@40@0:8:16@24@32"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"isProxy"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"c16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"isKindOfClass:"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"c24@0:8#16"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"isMemberOfClass:"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"c24@0:8#16"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"conformsToProtocol:"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"c24@0:8@16"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"respondsToSelector:"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"c24@0:8:16"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"retain"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"@16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"release"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"Vv16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"autorelease"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"@16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"retainCount"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"Q16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"zone"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"^{_NSZone=}16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"hash"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"Q16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"superclass"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"#16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> },
+    { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"description"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"@16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> } }
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> <span class="hljs-comment" style="color: rgb(150, 152, 150);">/*_method_list_t*/</span> {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> entsize;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// sizeof(struct _objc_method)</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> method_count;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _objc_method method_list[<span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>];
+} _OBJC_PROTOCOL_OPT_INSTANCE_METHODS_NSObject __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(_objc_method),
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>,
+    { { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"debugDescription"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"@16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> } }
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> <span class="hljs-comment" style="color: rgb(150, 152, 150);">/*_prop_list_t*/</span> {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> entsize;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// sizeof(struct _prop_t)</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> count_of_properties;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _prop_t prop_list[<span class="hljs-number" style="color: rgb(231, 140, 69);">4</span>];
+} _OBJC_PROTOCOL_PROPERTIES_NSObject __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(_prop_t),
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">4</span>,
+    { { <span class="hljs-string" style="color: rgb(185, 202, 74);">"hash"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"TQ,R"</span> },
+    { <span class="hljs-string" style="color: rgb(185, 202, 74);">"superclass"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"T#,R"</span> },
+    { <span class="hljs-string" style="color: rgb(185, 202, 74);">"description"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"T@\"NSString\",R,C"</span> },
+    { <span class="hljs-string" style="color: rgb(185, 202, 74);">"debugDescription"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"T@\"NSString\",R,C"</span> } }
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _protocol_t _OBJC_PROTOCOL_NSObject __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__datacoal_nt,coalesced"</span>))) = {
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"NSObject"</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> method_list_t *)&amp;_OBJC_PROTOCOL_INSTANCE_METHODS_NSObject,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> method_list_t *)&amp;_OBJC_PROTOCOL_OPT_INSTANCE_METHODS_NSObject,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _prop_list_t *)&amp;_OBJC_PROTOCOL_PROPERTIES_NSObject,
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(_protocol_t),
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> **)&amp;_OBJC_PROTOCOL_METHOD_TYPES_NSObject
+};
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _protocol_t *_OBJC_LABEL_PROTOCOL_$_NSObject = &amp;_OBJC_PROTOCOL_NSObject;
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> *_OBJC_PROTOCOL_METHOD_TYPES_sayAgain[] __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) =
+{
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"v16@0:8"</span>
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> <span class="hljs-comment" style="color: rgb(150, 152, 150);">/*_protocol_list_t*/</span> {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">long</span> protocol_count;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// Note, this is 32/64 bit</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _protocol_t *super_protocols[<span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>];
+} _OBJC_PROTOCOL_REFS_sayAgain __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>,
+    &amp;_OBJC_PROTOCOL_NSObject
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> <span class="hljs-comment" style="color: rgb(150, 152, 150);">/*_method_list_t*/</span> {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> entsize;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// sizeof(struct _objc_method)</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> method_count;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _objc_method method_list[<span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>];
+} _OBJC_PROTOCOL_INSTANCE_METHODS_sayAgain __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(_objc_method),
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>,
+    { { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"sayHelloAgain"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"v16@0:8"</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span> } }
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _protocol_t _OBJC_PROTOCOL_sayAgain __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__datacoal_nt,coalesced"</span>))) = {
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"sayAgain"</span>,
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _protocol_list_t *)&amp;_OBJC_PROTOCOL_REFS_sayAgain,
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> method_list_t *)&amp;_OBJC_PROTOCOL_INSTANCE_METHODS_sayAgain,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(_protocol_t),
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">char</span> **)&amp;_OBJC_PROTOCOL_METHOD_TYPES_sayAgain
+};
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _protocol_t *_OBJC_LABEL_PROTOCOL_$_sayAgain = &amp;_OBJC_PROTOCOL_sayAgain;
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> <span class="hljs-comment" style="color: rgb(150, 152, 150);">/*_protocol_list_t*/</span> {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">long</span> protocol_count;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// Note, this is 32/64 bit</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _protocol_t *super_protocols[<span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>];
+} _OBJC_CLASS_PROTOCOLS_$_People __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>,
+    &amp;_OBJC_PROTOCOL_sayAgain
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_ro_t _OBJC_METACLASS_RO_$_People __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>, <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t), <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t),
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span>)<span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"People"</span>,
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _method_list_t *)&amp;_OBJC_$_CLASS_METHODS_People,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_ro_t _OBJC_CLASS_RO_$_People __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>, __OFFSETOFIVAR__(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> People, sum), <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> People_IMPL),
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span>)<span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"People"</span>,
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _method_list_t *)&amp;_OBJC_$_INSTANCE_METHODS_People,
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _objc_protocol_list *)&amp;_OBJC_CLASS_PROTOCOLS_$_People,
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _ivar_list_t *)&amp;_OBJC_$_INSTANCE_VARIABLES_People,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">extern</span> <span class="hljs-string" style="color: rgb(185, 202, 74);">"C"</span> __declspec(dllimport) <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t OBJC_METACLASS_$_NSObject;
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">extern</span> <span class="hljs-string" style="color: rgb(185, 202, 74);">"C"</span> __declspec(dllexport) <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t OBJC_METACLASS_$_People __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_data"</span>))) = {
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>, <span class="hljs-comment" style="color: rgb(150, 152, 150);">// &amp;OBJC_METACLASS_$_NSObject,</span>
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>, <span class="hljs-comment" style="color: rgb(150, 152, 150);">// &amp;OBJC_METACLASS_$_NSObject,</span>
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>, <span class="hljs-comment" style="color: rgb(150, 152, 150);">// (void *)&amp;_objc_empty_cache,</span>
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>, <span class="hljs-comment" style="color: rgb(150, 152, 150);">// unused, was (void *)&amp;_objc_empty_vtable,</span>
+    &amp;_OBJC_METACLASS_RO_$_People,
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">extern</span> <span class="hljs-string" style="color: rgb(185, 202, 74);">"C"</span> __declspec(dllimport) <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t OBJC_CLASS_$_NSObject;
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">extern</span> <span class="hljs-string" style="color: rgb(185, 202, 74);">"C"</span> __declspec(dllexport) <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t OBJC_CLASS_$_People __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_data"</span>))) = {
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>, <span class="hljs-comment" style="color: rgb(150, 152, 150);">// &amp;OBJC_METACLASS_$_People,</span>
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>, <span class="hljs-comment" style="color: rgb(150, 152, 150);">// &amp;OBJC_CLASS_$_NSObject,</span>
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>, <span class="hljs-comment" style="color: rgb(150, 152, 150);">// (void *)&amp;_objc_empty_cache,</span>
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>, <span class="hljs-comment" style="color: rgb(150, 152, 150);">// unused, was (void *)&amp;_objc_empty_vtable,</span>
+    &amp;_OBJC_CLASS_RO_$_People,
+};
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> OBJC_CLASS_SETUP_$_People(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span>) {
+    OBJC_METACLASS_$_People.isa = &amp;OBJC_METACLASS_$_NSObject;
+    OBJC_METACLASS_$_People.superclass = &amp;OBJC_METACLASS_$_NSObject;
+    OBJC_METACLASS_$_People.cache = &amp;_objc_empty_cache;
+    OBJC_CLASS_$_People.isa = &amp;OBJC_METACLASS_$_People;
+    OBJC_CLASS_$_People.superclass = &amp;OBJC_CLASS_$_NSObject;
+    OBJC_CLASS_$_People.cache = &amp;_objc_empty_cache;
+}
+<span class="hljs-preprocessor" style="color: rgb(231, 140, 69);">#<span class="hljs-keyword" style="color: rgb(195, 151, 216);">pragma</span> section(".objc_inithooks$B", long, read, write)</span>
+__declspec(allocate(<span class="hljs-string" style="color: rgb(185, 202, 74);">".objc_inithooks$B"</span>)) <span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *OBJC_CLASS_SETUP[] = {
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)&amp;OBJC_CLASS_SETUP_$_People,
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> <span class="hljs-comment" style="color: rgb(150, 152, 150);">/*_method_list_t*/</span> {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> entsize;  <span class="hljs-comment" style="color: rgb(150, 152, 150);">// sizeof(struct _objc_method)</span>
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">int</span> method_count;
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _objc_method method_list[<span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>];
+} _OBJC_$_CATEGORY_INSTANCE_METHODS_NSObject_$_MyObject __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) = {
+    <span class="hljs-keyword" style="color: rgb(195, 151, 216);">sizeof</span>(_objc_method),
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>,
+    { { (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> objc_selector *)<span class="hljs-string" style="color: rgb(185, 202, 74);">"sayHello"</span>, <span class="hljs-string" style="color: rgb(185, 202, 74);">"v16@0:8"</span>, (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)_I_NSObject_MyObject_sayHello } }
+};
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">extern</span> <span class="hljs-string" style="color: rgb(185, 202, 74);">"C"</span> __declspec(dllimport) <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t OBJC_CLASS_$_NSObject;
+
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _category_t _OBJC_$_CATEGORY_NSObject_$_MyObject __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA,__objc_const"</span>))) =
+{
+    <span class="hljs-string" style="color: rgb(185, 202, 74);">"NSObject"</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>, <span class="hljs-comment" style="color: rgb(150, 152, 150);">// &amp;OBJC_CLASS_$_NSObject,</span>
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">const</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _method_list_t *)&amp;_OBJC_$_CATEGORY_INSTANCE_METHODS_NSObject_$_MyObject,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+    <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>,
+};
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> OBJC_CATEGORY_SETUP_$_NSObject_$_MyObject(<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span>) {
+    _OBJC_$_CATEGORY_NSObject_$_MyObject.cls = &amp;OBJC_CLASS_$_NSObject;
+}
+<span class="hljs-preprocessor" style="color: rgb(231, 140, 69);">#<span class="hljs-keyword" style="color: rgb(195, 151, 216);">pragma</span> section(".objc_inithooks$B", long, read, write)</span>
+__declspec(allocate(<span class="hljs-string" style="color: rgb(185, 202, 74);">".objc_inithooks$B"</span>)) <span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *OBJC_CATEGORY_SETUP[] = {
+    (<span class="hljs-keyword" style="color: rgb(195, 151, 216);">void</span> *)&amp;OBJC_CATEGORY_SETUP_$_NSObject_$_MyObject,
+};
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _class_t *L_OBJC_LABEL_CLASS_$[<span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>] __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA, __objc_classlist,regular,no_dead_strip"</span>))) = {
+    &amp;OBJC_CLASS_$_People,
+};
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> _category_t *L_OBJC_LABEL_CATEGORY_$[<span class="hljs-number" style="color: rgb(231, 140, 69);">1</span>] __attribute__((used, section(<span class="hljs-string" style="color: rgb(185, 202, 74);">"__DATA, __objc_catlist,regular,no_dead_strip"</span>))) = {
+    &amp;_OBJC_$_CATEGORY_NSObject_$_MyObject,
+};
+<span class="hljs-keyword" style="color: rgb(195, 151, 216);">static</span> <span class="hljs-keyword" style="color: rgb(195, 151, 216);">struct</span> IMAGE_INFO { <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> version; <span class="hljs-keyword" style="color: rgb(195, 151, 216);">unsigned</span> flag; } _OBJC_IMAGE_INFO = { <span class="hljs-number" style="color: rgb(231, 140, 69);">0</span>, <span class="hljs-number" style="color: rgb(231, 140, 69);">2</span> };
+</code></pre></div>
