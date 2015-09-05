@@ -28,7 +28,7 @@
 
 
 
-  <meta name="keywords" content="Cocos2dx," />
+  <meta name="keywords" content="Hexo,next" />
 
 
 
@@ -37,16 +37,16 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.png?v=0.4.4" />
 
 
-<meta name="description" content="根据A path to game development这是第一个新手任务。使用的引擎是Cocos2dx,一个新手比较好上手的游戏引擎。路要一步一步走。要想进步，就从第一个怪开始打起。作为经验累积的打怪之旅，我个人认为，能打死怪就好，不需要用多么华丽的招式。也就是说，先完成，再优化，以简化学习路上的繁枝末节，保持战斗力。">
+<meta name="description" content="Nothing in life is worthwhile unless you take risks.Nothing.“There is no passion to be found playing small - in settling for a life that is less than the one you are capable of living”.Make sure you h">
 <meta property="og:type" content="article">
-<meta property="og:title" content="俄罗斯方块[1]">
-<meta property="og:url" content="www.hitlolo.com/2014/11/18/Game/俄罗斯方块 PART.I/index.html">
+<meta property="og:title" content="Fall Forward">
+<meta property="og:url" content="www.hitlolo.com/2015/05/01/Diary/Fall Forward/index.html">
 <meta property="og:site_name" content="Into the Wild!">
-<meta property="og:description" content="根据A path to game development这是第一个新手任务。使用的引擎是Cocos2dx,一个新手比较好上手的游戏引擎。路要一步一步走。要想进步，就从第一个怪开始打起。作为经验累积的打怪之旅，我个人认为，能打死怪就好，不需要用多么华丽的招式。也就是说，先完成，再优化，以简化学习路上的繁枝末节，保持战斗力。">
-<meta property="og:updated_time" content="2015-09-04T18:17:54.000Z">
+<meta property="og:description" content="Nothing in life is worthwhile unless you take risks.Nothing.“There is no passion to be found playing small - in settling for a life that is less than the one you are capable of living”.Make sure you h">
+<meta property="og:updated_time" content="2015-09-04T18:26:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="俄罗斯方块[1]">
-<meta name="twitter:description" content="根据A path to game development这是第一个新手任务。使用的引擎是Cocos2dx,一个新手比较好上手的游戏引擎。路要一步一步走。要想进步，就从第一个怪开始打起。作为经验累积的打怪之旅，我个人认为，能打死怪就好，不需要用多么华丽的招式。也就是说，先完成，再优化，以简化学习路上的繁枝末节，保持战斗力。">
+<meta name="twitter:title" content="Fall Forward">
+<meta name="twitter:description" content="Nothing in life is worthwhile unless you take risks.Nothing.“There is no passion to be found playing small - in settling for a life that is less than the one you are capable of living”.Make sure you h">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -56,7 +56,7 @@
   };
 </script>
 
-    <title> 俄罗斯方块[1] // Into the Wild! </title>
+    <title> Fall Forward // Into the Wild! </title>
 </head>
 <body itemscope itemtype="http://schema.org/WebPage" lang="">
 <!--[if lte IE 8]>
@@ -172,7 +172,7 @@
           
           
             
-              俄罗斯方块[1]
+              Fall Forward
             
           
         </h1>
@@ -181,8 +181,8 @@
       <div class="post-meta">
         <span class="post-time">
           發表於
-          <time itemprop="dateCreated" datetime="2014-11-18T14:57:51+08:00" content="2014-11-18">
-            2014-11-18
+          <time itemprop="dateCreated" datetime="2015-05-01T06:57:51+08:00" content="2015-05-01">
+            2015-05-01
           </time>
         </span>
 
@@ -190,15 +190,7 @@
           <span class="post-category" >
             &nbsp; | &nbsp; 分類於
             
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/Game/" itemprop="url" rel="index"><span itemprop="name">Game</span></a></span>
-
-              
-              
-                ， 
-              
-
-            
-              <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/Game/Cocos2dx/" itemprop="url" rel="index"><span itemprop="name">Cocos2dx</span></a></span>
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/Diary/" itemprop="url" rel="index"><span itemprop="name">Diary</span></a></span>
 
               
               
@@ -218,77 +210,25 @@
       
 
       
-        <span itemprop="articleBody"><p>根据<a href="http://www.gamedev.net/page/resources/_/technical/game-programming/how-do-i-make-games-a-path-to-game-development-r892" target="_blank" rel="external">A path to game development</a><br>这是第一个新手任务。使用的引擎是Cocos2dx,一个新手比较好上手的游戏引擎。<br>路要一步一步走。要想进步，就从第一个怪开始打起。<br>作为经验累积的打怪之旅，我个人认为，能打死怪就好，不需要用多么华丽的招式。也就是说，先完成，再优化，以简化学习路上的繁枝末节，保持战斗力。<br><a id="more"></a></p>
-<h1 id="俄罗斯方块">俄罗斯方块</h1><p>恩，我个人就很喜欢玩的。<br>俄罗斯方块实现的方式肯定很多，但是，如果一开始就纠结于思考一个最好的方式可能会花费大量的时间，在这里，用第一个自己想到的觉得最好的方式实现就好，也许会非常稚嫩，但我相信也是经验的累积。相信也会涨点经验值，掉点宝什么的。</p>
-<p>既然是要完成任务，首先需要了解任务背景：<br>俄罗斯方块玩法几乎清楚，这个就直接下一页了。不过不知道的是，俄罗斯方块其实有很多的标准游戏机制以增强竞技性和玩法，如标准<a href="http://harddrop.com/wiki/SRS" target="_blank" rel="external">SRS旋转系统</a>，<a href="http://harddrop.com/wiki/Lock_delay" target="_blank" rel="external">LOCK Delay</a>等。<br>为了让任务完成后获得的成果，也就是这个游戏啦，更有可玩性。（因为我自己就是个俄罗斯方块爱好者），我决定参照俄罗斯方块官方指导文件来进行，这也可以直接省去了用来思考游戏流程的时间。</p>
-<p>参阅指导文件中..<a href="http://harddrop.com/wiki/Tetris_Guideline" target="_blank" rel="external">Tetris Guideline</a></p>
-<p>OK,任务明确。</p>
-<ol>
-<li>Playfield. 也就是棋盘。</li>
-<li>Tetromino. 7种方块。</li>
-<li><a href="http://harddrop.com/wiki/SRS" target="_blank" rel="external">SRS旋转系统</a>. Super Rotation System.</li>
-<li><a href="http://harddrop.com/wiki/Drop" target="_blank" rel="external">Softdrop and Harddrop</a>. 方块下落。</li>
-<li>Wall Kick. 方块踢墙.</li>
-<li><a href="http://harddrop.com/wiki/Random_Generator" target="_blank" rel="external">random generator</a>. 标准指导中的方块随机方案。</li>
-<li>Hold Piece. 玩家可将一个方块暂存.</li>
-<li><a href="http://harddrop.com/wiki/Ghost_piece" target="_blank" rel="external">Ghost Piece</a>. 显示一个方块最终将掉棋盘底位置的阴影.</li>
-<li>Next Piece. 下一块。这个很常见啦。</li>
-</ol>
-<p>恩。还有，商标和名字是不能乱用的。</p>
-<h1 id="任务流程">任务流程</h1><pre><code>                           +----------+                   
-                           |<span class="string">   LOGO   </span>|<span class="string">                   
-                           +-----+----+                   
-                                 </span>|<span class="string">                        
-                                 </span>|<span class="string">                        
-                            +----v----+                   
-                startButton-+   MENU  +--------+          
-                   </span>|<span class="string">        +---------+       creditButton
-                   </span>|<span class="string">           setbutton       </span>|<span class="string">          
-                   </span>|<span class="string">             </span>|<span class="string">             </span>|<span class="string">          
-              +----v---+     +---v---+     +---v---+      
-              </span>|<span class="string">  START </span>|<span class="string">     </span>|<span class="string"> SET   </span>|<span class="string">     </span>|<span class="string">CREDIT        
-          +---+--------+     +-------+     +-------+      
-          </span>|<span class="string">                                               
-          </span>|<span class="string">                                               
-+---------v------------+                                  
-</span>|<span class="string">                      </span>|<span class="string">                                  
-</span>|<span class="string">        GAME         &lt;---------+                         
-</span>|<span class="string">                      </span>|<span class="string">        </span>|<span class="string">                         
-+----^------------+----+        </span>|<span class="string">                         
-     </span>|<span class="string">            </span>|<span class="string">           RESTART                     
-     </span>|<span class="string">            </span>|<span class="string">             </span>|<span class="string">                         
-  +--v--+     +---v----+        </span>|<span class="string">                         
-  </span>|<span class="string">PAUSE</span>|<span class="string">     </span>|<span class="string"> OVER   </span>|<span class="string">        </span>|<span class="string">                         
-  </span>|<span class="string">     </span>|<span class="string">     </span>|<span class="string">        +--------+                         
-  +-----+     +--------+                                  </span>
-</code></pre><hr>
-<h1 id="工具">工具</h1><ul>
-<li>环境:win VS2013</li>
-<li>引擎:Cocos2d-x V3.3</li>
-<li>语言:c++</li>
-<li>其他:Cocostudio</li>
-<li>目标机型:自用的samsung NOTE3(自己能玩玩就行啦）</li>
-</ul>
-<hr>
-<p>明确，收集图片等资源。。<br>ok，开始吧。</p>
+        <span itemprop="articleBody"><h4 id="Nothing_in_life_is_worthwhile_unless_you_take_risks-">Nothing in life is worthwhile unless you take risks.</h4><p>Nothing.<br>“There is no passion to be found playing small - in settling for a life that is less than the one you are capable of living”.<br>Make sure you have something to fall back on? NO.<br>If i am going to fall,I dont want to fall back on anything, except my faith.<br>I want to fall forward.<br>i figure at least this way i’ll see what i am about to hit.<br>Fall forward.<br>Every failed experiment is one setp closer to success.<br>You’ve got to take risks.<br><a id="more"></a></p>
+<h4 id="You_will_fail-">You will fail.</h4><p>You will fail at some point in your Life,accepte it.<br>You will lose.<br>You will embarrass yourself.<br>You will  suck  at something.<br>There is no doubt about it.<br>But You will not quit,You will not fall back.<br>DO You have the guts to fail.<br>If You did not fail,You are  not even trying.<br>To get something you never had,you have to do something you  never did.<br>The world need you.<br>You will never see a U-Haul behind a hearse.<br>So,there is nothing to lose.</p>
+<h4 id="Failure_is_the_best_way_to_figure_out_where_you_are_going-">Failure is the best way to  figure out where you are going.</h4><p>Being taking risks, being  willing to fail.<br>It is about knowing what you know,and what you do not know.<br>It is about open to people,and to idea.<br>Begin from slowly risks,take small steps,to overcome your fears.<br>Ultimately your heart will flood  with love.</p>
+<p>Open to life,Define yourself.</p>
+<blockquote>
+<p>Penn Commencement Address given Monday, May 16, 2011 by Denzel Washington, Academy Award-winning and Tony Award-winning actor and director.</p>
+</blockquote>
 </span>
       
     </div>
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/Cocos2dx/" rel="tag">#Cocos2dx</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2014/11/18/Game/俄罗斯方块 PART.II/" rel="prev">俄罗斯方块[2]</a>
+              <a href="/2015/05/01/IOS_CocoaTouch/IOS开发_1_uiapplication/" rel="prev">UIApplication</a>
             
           </div>
 
@@ -357,14 +297,14 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-count">6</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
 
           <div class="site-state-item site-state-categories">
             <a href="/categories">
-              <span class="site-state-item-count">8</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">分類</span>
               </a>
           </div>
@@ -420,7 +360,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#俄罗斯方块"><span class="nav-number">1.</span> <span class="nav-text">俄罗斯方块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务流程"><span class="nav-number">2.</span> <span class="nav-text">任务流程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工具"><span class="nav-number">3.</span> <span class="nav-text">工具</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Nothing_in_life_is_worthwhile_unless_you_take_risks-"><span class="nav-number">1.</span> <span class="nav-text">Nothing in life is worthwhile unless you take risks.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#You_will_fail-"><span class="nav-number">2.</span> <span class="nav-text">You will fail.</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Failure_is_the_best_way_to_figure_out_where_you_are_going-"><span class="nav-number">3.</span> <span class="nav-text">Failure is the best way to  figure out where you are going.</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
