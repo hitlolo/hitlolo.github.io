@@ -43,7 +43,7 @@
 <meta property="og:url" content="www.hitlolo.com/2015/05/26/IOS_Objectivec/IOS_objc_1_compiler/index.html">
 <meta property="og:site_name" content="Into the Wild">
 <meta property="og:description" content="序从源文件到可执行程序。代码都经历了些什么?使用编译器Clang来一步一步地参考，直观地理解一下。clang user$ clang -ccc-print-phases main.m1234560: input, &quot;main.m&quot;, objective-c1: preprocessor, &amp;#123;0&amp;#125;, objective-c-cpp-output2: compiler, &amp;#123">
-<meta property="og:updated_time" content="2015-09-06T12:56:21.000Z">
+<meta property="og:updated_time" content="2015-09-07T07:19:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Objective-C——Compiler">
 <meta name="twitter:description" content="序从源文件到可执行程序。代码都经历了些什么?使用编译器Clang来一步一步地参考，直观地理解一下。clang user$ clang -ccc-print-phases main.m1234560: input, &quot;main.m&quot;, objective-c1: preprocessor, &amp;#123;0&amp;#125;, objective-c-cpp-output2: compiler, &amp;#123">
@@ -263,7 +263,11 @@
 <p><code>_objc_empty_cache</code>，<code>_objc_msgSend</code> 都<code>(from libobjc)</code><br>这里的libobjc正是运行时系统所在的库，这些服务都来源于Runtime, runtime system也正是在链接阶段动态链接进来的。</p>
 <p>至此，万事俱备：<br><code>./a.out</code><br>终于看到了<code>hello world</code>.<br>源-&gt;tokens-&gt;AST-&gt;运行时支持-&gt;llvm-&gt;object code确是漫漫长路。</p>
 <h1 id="续,Todo">续,Todo</h1><p>始于初见，止于终老。<br>对于Objective-C，初见很简单：Objective，C。2个单词构成的名字，不那么简洁，但也算恰到好处。细看一下：<br>姓: C<br>名: Objective<br>似乎已经自我介绍得蛮清楚了。<br>95%C的特性——毕竟姓C。<br>另外剩下的就是Objective了。那么关于Objective，又从何说起呢。<br>正是从此开始。<br>从上面可以看到，编译器将Objective-C代码改写了特别的C数据结构和方法以配合Runtime来支持其Objective的特性。<br>Runtime是Objective-C的操作系统，是其一切动态性的来源。每一个程序都有自己对应的运行时，在程序启动时加载。<br>那么在a.out之后，程序正式开始之前（main函数开始执行），Runtime又是如何加载进来的呢？<br>引入新问题：静态链接，动态链接，dyld。<br>关于这方面参考链接：<br><a href="https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html" target="_blank" rel="external">dyld: Dynamic Linking On OS X</a>.<br><a href="http://ddeville.me/2014/04/dynamic-linking/" target="_blank" rel="external">Dynamic linking on iOS</a><br><a href="http://blog.sunnyxx.com/2014/08/30/objc-pre-main/" target="_blank" rel="external">iOS程序main函数之前发生了什么</a></p>
-<h1 id="References">References</h1><p>Clang——<a href="http://clang.llvm.org/docs/CommandGuide/clang.html#cmdoption-c" target="_blank" rel="external">clang - the Clang C, C++, and Objective-C compiler</a><br>预处理语言——<a href="https://gcc.gnu.org/onlinedocs/cpp/" target="_blank" rel="external">The C Preprocessor</a><br>Objective-C 编译器指令——<a href="http://nshipster.com/at-compiler-directives/" target="_blank" rel="external">@-compiler-directives</a>,<a href="http://www.learn-cocos2d.com/2011/10/complete-list-objectivec-20-compiler-directives/" target="_blank" rel="external">Complete List-ObjectiveC 2.0 Compiler Directives</a><br>Objective-C Runtime —— <a href="http://opensource.apple.com/source/objc4/objc4-647/runtime/" target="_blank" rel="external">Source Code</a><br>nm(1)——<a href="http://www.unix.com/man-page/opensolaris/1/nm/" target="_blank" rel="external">UNIX-nm</a></p>
+<h1 id="References">References</h1><a class="btn btn-default" href="http://clang.llvm.org/docs/CommandGuide/clang.html#cmdoption-c" target="_blank" rel="external">Clang</a>
+<a class="btn btn-default" href="https://gcc.gnu.org/onlinedocs/cpp/" target="_blank" rel="external">The_C_Preprocessor</a>
+<a class="btn btn-default" href="http://nshipster.com/at-compiler-directives/" target="_blank" rel="external">Complete-List_ObjectiveC-2.0_Compiler_Directives</a>
+<a class="btn btn-default" href="http://opensource.apple.com/source/objc4/objc4-647/runtime/" target="_blank" rel="external">Objective-C_Runtime_SourceCode</a>
+<a class="btn btn-default" href="http://www.unix.com/man-page/opensolaris/1/nm/" target="_blank" rel="external">nm(1)——[UNIX-nm]</a>
 </span>
       
     </div>
