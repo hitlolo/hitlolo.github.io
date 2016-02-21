@@ -1,0 +1,702 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+    
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.4"/>
+
+
+    <meta name="description" content="Zero's Blog | iOS学习日志" />
+
+
+
+  <meta name="keywords" content="Objective-C,compiler," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.png?v=0.4.4" />
+
+
+<meta name="description" content="序从源文件到可执行程序。代码都经历了些什么?使用编译器Clang来一步一步地参考，直观地理解一下。使用以下命令查看编译器对源文件进行处理的步骤：clang -ccc-print-phases main.mclang user$ clang -ccc-print-phases main.m 输出结果1234560: input, &quot;main.m&quot;, objective-c1: preprocesso">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Objective-C——Compiler">
+<meta property="og:url" content="www.hitlolo.com/2015/05/26/iOS/runtime/iOS_objc_runtime_compiler/index.html">
+<meta property="og:site_name" content="Into the Wild">
+<meta property="og:description" content="序从源文件到可执行程序。代码都经历了些什么?使用编译器Clang来一步一步地参考，直观地理解一下。使用以下命令查看编译器对源文件进行处理的步骤：clang -ccc-print-phases main.mclang user$ clang -ccc-print-phases main.m 输出结果1234560: input, &quot;main.m&quot;, objective-c1: preprocesso">
+<meta property="og:updated_time" content="2016-02-21T04:19:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Objective-C——Compiler">
+<meta name="twitter:description" content="序从源文件到可执行程序。代码都经历了些什么?使用编译器Clang来一步一步地参考，直观地理解一下。使用以下命令查看编译器对源文件进行处理的步骤：clang -ccc-print-phases main.mclang user$ clang -ccc-print-phases main.m 输出结果1234560: input, &quot;main.m&quot;, objective-c1: preprocesso">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+    <title> Objective-C——Compiler // Into the Wild </title>
+</head>
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+<!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+
+
+
+
+<div class="container one-column page-post-detail">
+    <div class="headband"></div>
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+        <div class="header-inner">
+
+ <h1 class="site-meta">
+  
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-logo"></i>
+      </span>
+      <span class="site-title">Into the Wild</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+ 
+  
+    <ul id="menu" class="menu ">
+       
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-home"></i> <br />
+            首頁
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            <i class="menu-item-icon icon-categories"></i> <br />
+            分類
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-tags"></i> <br />
+            標籤
+          </a>
+        </li>
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+        </div>
+    </header>
+
+    <main id="main" class="main">
+        <div class="main-inner">
+            <div id="content" class="content">
+                
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              Objective-C——Compiler
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          發表於
+          <time itemprop="dateCreated" datetime="2015-05-26T19:04:19+08:00" content="2015-05-26">
+            2015-05-26
+          </time>
+        </span>
+
+        
+          <span class="post-category" >
+            &nbsp; | &nbsp; 分類於
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/iOS/" itemprop="url" rel="index"><span itemprop="name">iOS</span></a></span>
+
+              
+              
+                ， 
+              
+
+            
+              <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/iOS/Runtime/" itemprop="url" rel="index"><span itemprop="name">Runtime</span></a></span>
+
+              
+              
+
+            
+          </span>
+        
+
+        
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+
+      
+        <span itemprop="articleBody"><h1 id="序">序</h1><p>从源文件到可执行程序。代码都经历了些什么?<br>使用编译器Clang来一步一步地参考，直观地理解一下。<br>使用以下命令查看编译器对源文件进行处理的步骤：<br><code>clang -ccc-print-phases main.m</code><br><figure class="highlight objectivec"><figcaption><span>clang user$ clang -ccc-print-phases main.m 输出结果</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0</span>: input, <span class="string">"main.m"</span>, objective-c</span><br><span class="line"><span class="number">1</span>: preprocessor, &#123;<span class="number">0</span>&#125;, objective-c-cpp-output</span><br><span class="line"><span class="number">2</span>: compiler, &#123;<span class="number">1</span>&#125;, assembler</span><br><span class="line"><span class="number">3</span>: assembler, &#123;<span class="number">2</span>&#125;, object</span><br><span class="line"><span class="number">4</span>: linker, &#123;<span class="number">3</span>&#125;, image</span><br><span class="line"><span class="number">5</span>: bind-arch, <span class="string">"x86_64"</span>, &#123;<span class="number">4</span>&#125;, image</span><br></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<p>待处理的文件是main.m<br><figure class="highlight objectivec"><figcaption><span>Main.m</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//  注释</span></span><br><span class="line"><span class="comment">//  main.m</span></span><br><span class="line"><span class="comment">//  Clang</span></span><br><span class="line"></span><br><span class="line"><span class="preprocessor">#import <span class="title">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"><span class="comment">//宏定义</span></span><br><span class="line"><span class="preprocessor">#define MULT(x) (x) * (x)</span></span><br><span class="line"><span class="comment">//Category</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span>(<span class="title">MyObject</span>)</span></span><br><span class="line">- (<span class="keyword">void</span>)sayHello;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSObject</span>(<span class="title">MyObject</span>)</span></span><br><span class="line">- (<span class="keyword">void</span>)sayHello&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"hello world"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="comment">//Protocol</span></span><br><span class="line"><span class="class"><span class="keyword">@protocol</span> <span class="title">sayAgain</span> &lt;<span class="title">NSObject</span>&gt;</span></span><br><span class="line">- (<span class="keyword">void</span>)sayHelloAgain;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"><span class="comment">//Interface</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">People</span> : <span class="title">NSObject</span></span></span><br><span class="line">&lt;sayAgain&gt;&#123;</span><br><span class="line">    <span class="keyword">int</span> sum;</span><br><span class="line">&#125;</span><br><span class="line">+ (<span class="keyword">void</span>)hello;</span><br><span class="line">- (<span class="keyword">void</span>)hello;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">People</span></span></span><br><span class="line">+ (<span class="keyword">void</span>)hello&#123;</span><br><span class="line">	<span class="built_in">NSLog</span>(<span class="string">@"class method"</span>);</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">void</span>)hello&#123;</span><br><span class="line">    sum = MULT(<span class="number">10</span>);</span><br><span class="line">    [<span class="keyword">self</span> sayHello];</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"sum = %d"</span>,sum);</span><br><span class="line">&#125;</span><br><span class="line">- (<span class="keyword">void</span>)sayHelloAgain&#123;</span><br><span class="line">    [<span class="keyword">self</span> hello];</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="comment">// insert code here...</span></span><br><span class="line">        <span class="keyword">id</span>  jackson = [[People alloc]init];</span><br><span class="line">        [People hello];</span><br><span class="line">        [jackson hello];</span><br><span class="line">        [jackson sayHelloAgain];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>之后对以上的各个步骤稍稍学习一下：</p>
+<h1 id="1:_preprocessor_预处理">1: preprocessor 预处理</h1><p>编译器要的第一个阶段是预处理。调用的工具是预处理器。<br>跟预处理器打交道的是<a href="https://gcc.gnu.org/onlinedocs/cpp/" target="_blank" rel="external">预处理语言</a>，预处理器将根据预处理指令进行代码替换以及宏展开，以此完成对代码的第一阶段处理。<br>查看预处理器的输出结果可以使用命令行：<br><code>clang -E main.m</code><br>也可以Xcode：Product/Perform Action/Preprocess main.m<br>可以看到输出文件中<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#import &lt;Foundation/Foundation.h&gt;</span></span><br></pre></td></tr></table></figure></p>
+<p>已经替换为Foundation.h文件中的代码。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">#<span class="keyword">define</span> MULT(x) (x) * (x)</span></span><br><span class="line">sum = MULT(<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+<p>也经过宏展开，成为</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sum = (<span class="number">10</span>) * (<span class="number">10</span>);</span><br></pre></td></tr></table></figure>
+<p>另外，文件中注释和多余空行也被去掉。准备好了进入下一步。</p>
+<h1 id="2:_compiler_编译">2: compiler 编译</h1><p>这个阶段编译器接收预处理后的文件，进行词法，语法，语义分析然后完成类型检查，代码优化等工作，最后输出为中间代码，如汇编语言，以完成进入下一步的准备工作。</p>
+<h2 id="词法分析（Lexcical_Analysis）">词法分析（Lexcical Analysis）</h2><p>编译器将源文件中的定义，声明，关键字等分解成一个个看似无逻辑关系的标示符，完成初步分解。<br>使用编译器命令：<br><code>clang -Xclang -dump-tokens main.m</code></p>
+<p>如：上文示例程序中的：<br><figure class="highlight objectivec"><figcaption><span>源文件</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">interface <span class="built_in">NSObject</span>(MyObject)</span><br><span class="line">-(<span class="keyword">void</span>)sayHello;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<p>被解析为：</p>
+<figure class="highlight bash"><figcaption><span>词法分析后</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">at <span class="string">'@'</span>	                [StartOfLine]	Loc=&lt;main.m:<span class="number">15</span>:<span class="number">1</span>&gt;</span><br><span class="line">identifier <span class="string">'interface'</span>			Loc=&lt;main.m:<span class="number">15</span>:<span class="number">2</span>&gt;</span><br><span class="line">identifier <span class="string">'NSObject'</span>	[LeadingSpace]	Loc=&lt;main.m:<span class="number">15</span>:<span class="number">12</span>&gt;</span><br><span class="line">l_paren <span class="string">'('</span>				Loc=&lt;main.m:<span class="number">15</span>:<span class="number">20</span>&gt;</span><br><span class="line">identifier <span class="string">'MyObject'</span>			Loc=&lt;main.m:<span class="number">15</span>:<span class="number">21</span>&gt;</span><br><span class="line">r_paren <span class="string">')'</span>				Loc=&lt;main.m:<span class="number">15</span>:<span class="number">29</span>&gt;</span><br><span class="line">minus <span class="string">'-'</span>	 	[StartOfLine]	Loc=&lt;main.m:<span class="number">17</span>:<span class="number">1</span>&gt;</span><br><span class="line">l_paren <span class="string">'('</span>	 	[LeadingSpace]	Loc=&lt;main.m:<span class="number">17</span>:<span class="number">3</span>&gt;</span><br><span class="line">void <span class="string">'void'</span>				Loc=&lt;main.m:<span class="number">17</span>:<span class="number">4</span>&gt;</span><br><span class="line">r_paren <span class="string">')'</span>				Loc=&lt;main.m:<span class="number">17</span>:<span class="number">8</span>&gt;</span><br><span class="line">identifier <span class="string">'sayHello'</span>			Loc=&lt;main.m:<span class="number">17</span>:<span class="number">9</span>&gt;</span><br><span class="line">semi <span class="string">';'</span>				Loc=&lt;main.m:<span class="number">17</span>:<span class="number">17</span>&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="语法分析（Syntax_Analysis）">语法分析（Syntax Analysis）</h2><p>语法分析阶段，编译器将接收词法分析器的输出结果，通过语法分析器创建树形的中间表示AST（Abstract Syntax Tree)。AST给出了源代码的语法结构，对后端的处理提供一个比较清晰的接口。编译器的后续步骤将根据AST来分析代码。<br><code>clang -Xclang -ast-dump main.m</code><br>输出</p>
+<figure class="highlight java"><figcaption><span>AST</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">| <span class="comment">//Category(MyObject)</span></span><br><span class="line">|-ObjCCategoryDecl <span class="number">0x106c1e0c0</span> &lt;main.m:<span class="number">15</span>:<span class="number">1</span>, line:<span class="number">19</span>:<span class="number">2</span>&gt; line:<span class="number">15</span>:<span class="number">12</span> MyObject</span><br><span class="line">| |-ObjCInterface <span class="number">0x1049e7fb0</span> <span class="string">'NSObject'</span></span><br><span class="line">| |-ObjCCategoryImpl <span class="number">0x106c1e1f0</span> <span class="string">'NSObject'</span></span><br><span class="line">| `-ObjCMethodDecl <span class="number">0x106c1e160</span> &lt;line:<span class="number">17</span>:<span class="number">1</span>, col:<span class="number">17</span>&gt; col:<span class="number">1</span> - sayHello <span class="string">'void'</span></span><br><span class="line">|-ObjCCategoryImplDecl <span class="number">0x106c1e1f0</span> &lt;line:<span class="number">21</span>:<span class="number">1</span>, line:<span class="number">27</span>:<span class="number">1</span>&gt; line:<span class="number">21</span>:<span class="number">17</span> NSObject</span><br><span class="line">| |-ObjCInterface <span class="number">0x1049e7fb0</span> <span class="string">'NSObject'</span></span><br><span class="line">| |-ObjCCategory <span class="number">0x106c1e0c0</span> <span class="string">'MyObject'</span></span><br><span class="line">| `-ObjCMethodDecl <span class="number">0x106c1e270</span> &lt;line:<span class="number">23</span>:<span class="number">1</span>, line:<span class="number">25</span>:<span class="number">1</span>&gt; line:<span class="number">23</span>:<span class="number">1</span> - sayHello <span class="string">'void'</span></span><br><span class="line">|   |-ImplicitParamDecl <span class="number">0x106c1e300</span> &lt;&lt;invalid sloc&gt;&gt; &lt;invalid sloc&gt; implicit self <span class="string">'NSObject *'</span></span><br><span class="line">|   |-ImplicitParamDecl <span class="number">0x106c1e360</span> &lt;&lt;invalid sloc&gt;&gt; &lt;invalid sloc&gt; implicit _cmd <span class="string">'SEL'</span>:<span class="string">'SEL *'</span></span><br><span class="line">|   `-CompoundStmt <span class="number">0x106c1e4f8</span> &lt;col:<span class="number">17</span>, line:<span class="number">25</span>:<span class="number">1</span>&gt;</span><br><span class="line">|     `-CallExpr <span class="number">0x106c1e4b0</span> &lt;line:<span class="number">24</span>:<span class="number">5</span>, col:<span class="number">25</span>&gt; <span class="string">'void'</span></span><br><span class="line">|       |-ImplicitCastExpr <span class="number">0x106c1e498</span> &lt;col:<span class="number">5</span>&gt; <span class="string">'void (*)(id, ...)'</span> &lt;FunctionToPointerDecay&gt;</span><br><span class="line">|       | `-DeclRefExpr <span class="number">0x106c1e3b8</span> &lt;col:<span class="number">5</span>&gt; <span class="string">'void (id, ...)'</span> Function <span class="number">0x104af8010</span> <span class="string">'NSLog'</span> <span class="string">'void (id, ...)'</span></span><br><span class="line">|       `-ImplicitCastExpr <span class="number">0x106c1e4e0</span> &lt;col:<span class="number">11</span>, col:<span class="number">12</span>&gt; <span class="string">'id'</span>:<span class="string">'id'</span> &lt;BitCast&gt;</span><br><span class="line">|         `-ObjCStringLiteral <span class="number">0x106c1e418</span> &lt;col:<span class="number">11</span>, col:<span class="number">12</span>&gt; <span class="string">'NSString *'</span></span><br><span class="line">|           `-StringLiteral <span class="number">0x106c1e3e0</span> &lt;col:<span class="number">12</span>&gt; <span class="string">'char [12]'</span> lvalue <span class="string">"hello world"</span></span><br><span class="line">略。。</span><br><span class="line"><span class="comment">//main</span></span><br><span class="line">  |-FunctionDecl <span class="number">0x106c1f4d0</span> &lt;line:<span class="number">58</span>:<span class="number">1</span>, line:<span class="number">67</span>:<span class="number">1</span>&gt; line:<span class="number">58</span>:<span class="number">5</span> main <span class="string">'int (int, const char **)'</span></span><br><span class="line">  |-ParmVarDecl <span class="number">0x106c1f310</span> &lt;col:<span class="number">10</span>, col:<span class="number">14</span>&gt; col:<span class="number">14</span> argc <span class="string">'int'</span></span><br><span class="line">  |-ParmVarDecl <span class="number">0x106c1f3c0</span> &lt;col:<span class="number">20</span>, col:<span class="number">38</span>&gt; col:<span class="number">33</span> argv <span class="string">'const char **'</span>:<span class="string">'const char **'</span></span><br><span class="line">   -CompoundStmt <span class="number">0x106c1f838</span> &lt;col:<span class="number">41</span>, line:<span class="number">67</span>:<span class="number">1</span>&gt;</span><br><span class="line">    |-ObjCAutoreleasePoolStmt <span class="number">0x106c1f7e0</span> &lt;line:<span class="number">59</span>:<span class="number">5</span>, line:<span class="number">65</span>:<span class="number">5</span>&gt;</span><br><span class="line">    | `-CompoundStmt <span class="number">0x106c1f7a8</span> &lt;line:<span class="number">59</span>:<span class="number">22</span>, line:<span class="number">65</span>:<span class="number">5</span>&gt;</span><br><span class="line">    |   |-DeclStmt <span class="number">0x106c1f670</span> &lt;line:<span class="number">61</span>:<span class="number">9</span>, col:<span class="number">43</span>&gt;</span><br><span class="line">    |   | `-VarDecl <span class="number">0x106c1f590</span> &lt;col:<span class="number">9</span>, col:<span class="number">42</span>&gt; col:<span class="number">13</span> used jackson <span class="string">'id'</span>:<span class="string">'id'</span> cinit</span><br><span class="line">    |   |   `-ImplicitCastExpr <span class="number">0x106c1f658</span> &lt;col:<span class="number">23</span>, col:<span class="number">42</span>&gt; <span class="string">'id'</span>:<span class="string">'id'</span> &lt;BitCast&gt;</span><br><span class="line">    |   |     `-ObjCMessageExpr <span class="number">0x106c1f628</span> &lt;col:<span class="number">23</span>, col:<span class="number">42</span>&gt; <span class="string">'People *'</span> selector=init</span><br><span class="line">    |   |       `-ObjCMessageExpr <span class="number">0x106c1f5f8</span> &lt;col:<span class="number">24</span>, col:<span class="number">37</span>&gt; <span class="string">'People *'</span> selector=alloc <span class="class"><span class="keyword">class</span></span>=<span class="string">'People'</span></span><br><span class="line">    |   |-ObjCMessageExpr <span class="number">0x106c1f698</span> &lt;line:<span class="number">62</span>:<span class="number">9</span>, col:<span class="number">22</span>&gt; <span class="string">'void'</span> selector=hello <span class="class"><span class="keyword">class</span></span>=<span class="string">'People'</span></span><br><span class="line">    |   |-ObjCMessageExpr <span class="number">0x106c1f708</span> &lt;line:<span class="number">63</span>:<span class="number">9</span>, col:<span class="number">23</span>&gt; <span class="string">'void'</span> selector=hello</span><br><span class="line">    |   | `-ImplicitCastExpr <span class="number">0x106c1f6f0</span> &lt;col:<span class="number">10</span>&gt; <span class="string">'id'</span>:<span class="string">'id'</span> &lt;LValueToRValue&gt;</span><br><span class="line">    |   |   `-DeclRefExpr <span class="number">0x106c1f6c8</span> &lt;col:<span class="number">10</span>&gt; <span class="string">'id'</span>:<span class="string">'id'</span> lvalue Var <span class="number">0x106c1f590</span> <span class="string">'jackson'</span> <span class="string">'id'</span>:<span class="string">'id'</span></span><br><span class="line">    |   `-ObjCMessageExpr <span class="number">0x106c1f778</span> &lt;line:<span class="number">64</span>:<span class="number">9</span>, col:<span class="number">31</span>&gt; <span class="string">'void'</span> selector=sayHelloAgain</span><br><span class="line">    |     `-ImplicitCastExpr <span class="number">0x106c1f760</span> &lt;col:<span class="number">10</span>&gt; <span class="string">'id'</span>:<span class="string">'id'</span> &lt;LValueToRValue&gt;</span><br><span class="line">    |       `-DeclRefExpr <span class="number">0x106c1f738</span> &lt;col:<span class="number">10</span>&gt; <span class="string">'id'</span>:<span class="string">'id'</span> lvalue Var <span class="number">0x106c1f590</span> <span class="string">'jackson'</span> <span class="string">'id'</span>:<span class="string">'id'</span></span><br><span class="line">    `-ReturnStmt <span class="number">0x106c1f818</span> &lt;line:<span class="number">66</span>:<span class="number">5</span>, col:<span class="number">12</span>&gt;</span><br><span class="line">      `-IntegerLiteral <span class="number">0x106c1f7f8</span> &lt;col:<span class="number">12</span>&gt; <span class="string">'int'</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+<p>根据AST，编译器掌握了代码的语法结构和信息，将以此为基础作语义分析。</p>
+<h2 id="语义分析（Semantic_Analysis）">语义分析（Semantic Analysis）</h2><p>语义分析根据AST和符号表来分析源代码与语言定义的语义是否一致。<br>包括：静态分析，类型检查，也可进行代码改写与代码优化。<br>命令：<br><code>clang -fsyntax-only</code><br><code>clang -analyze</code><br>可查看相应分析的结果。</p>
+<hr>
+<p>现在只来对比一下原示例中的类别声明部分，观察一下AST：<br><figure class="highlight objectivec"><figcaption><span>原示例中的类别</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">NSObject</span>(<span class="title">MyObject</span>)</span></span><br><span class="line">- (<span class="keyword">void</span>)sayHello;</span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">NSObject</span>(<span class="title">MyObject</span>)</span></span><br><span class="line">- (<span class="keyword">void</span>)sayHello&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"hello world"</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure></p>
+<figure class="highlight x86asm"><figcaption><span>AST输出</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">|-ObjCCategoryDecl <span class="number">0x106c1e0c0</span> &lt;main.m:<span class="number">15</span>:<span class="number">1</span>, line:<span class="number">19</span>:<span class="number">2</span>&gt; line:<span class="number">15</span>:<span class="number">12</span> MyObject</span><br><span class="line">| |-ObjCInterface <span class="number">0x1049e7fb0</span> <span class="string">'NSObject'</span></span><br><span class="line">| |-ObjCCategoryImpl <span class="number">0x106c1e1f0</span> <span class="string">'NSObject'</span></span><br><span class="line">| <span class="string">`-ObjCMethodDecl 0x106c1e160 &lt;line:17:1, col:17&gt; col:1 - sayHello 'void'</span><br><span class="line">|-ObjCCategoryImplDecl 0x106c1e1f0 &lt;line:21:1, line:27:1&gt; line:21:17 NSObject</span><br><span class="line">| |-ObjCInterface 0x1049e7fb0 'NSObject'</span><br><span class="line">| |-ObjCCategory 0x106c1e0c0 'MyObject'</span><br><span class="line">| `</span>-ObjCMethodDecl <span class="number">0x106c1e270</span> &lt;line:<span class="number">23</span>:<span class="number">1</span>, line:<span class="number">25</span>:<span class="number">1</span>&gt; line:<span class="number">23</span>:<span class="number">1</span> - sayHello <span class="string">'void'</span></span><br><span class="line">|   |-ImplicitParamDecl <span class="number">0x106c1e300</span> &lt;&lt;invalid sloc&gt;&gt; &lt;invalid sloc&gt; implicit self <span class="string">'NSObject *'</span></span><br><span class="line">|   |-ImplicitParamDecl <span class="number">0x106c1e360</span> &lt;&lt;invalid sloc&gt;&gt; &lt;invalid sloc&gt; implicit _cmd <span class="string">'SEL'</span>:<span class="string">'SEL *'</span></span><br><span class="line">|   <span class="string">`-CompoundStmt 0x106c1e4f8 &lt;col:17, line:25:1&gt;</span><br><span class="line">|     `</span>-CallExpr <span class="number">0x106c1e4b0</span> &lt;line:<span class="number">24</span>:<span class="number">5</span>, col:<span class="number">25</span>&gt; <span class="string">'void'</span></span><br><span class="line">|       |-ImplicitCastExpr <span class="number">0x106c1e498</span> &lt;col:<span class="number">5</span>&gt; <span class="string">'void (*)(id, ...)'</span> &lt;FunctionToPointerDecay&gt;</span><br><span class="line">|       | <span class="string">`-DeclRefExpr 0x106c1e3b8 &lt;col:5&gt; 'void (id, ...)' Function 0x104af8010 'NSLog' 'void (id, ...)'</span><br><span class="line">|       `</span>-ImplicitCastExpr <span class="number">0x106c1e4e0</span> &lt;col:<span class="number">11</span>, col:<span class="number">12</span>&gt; <span class="string">'id'</span>:<span class="string">'id'</span> &lt;BitCast&gt;</span><br><span class="line">|         <span class="string">`-ObjCStringLiteral 0x106c1e418 &lt;col:11, col:12&gt; 'NSString *'</span><br><span class="line">|           `</span>-StringLiteral <span class="number">0x106c1e3e0</span> &lt;col:<span class="number">12</span>&gt; <span class="string">'char [12]'</span> lvalue <span class="string">"hello world"</span></span><br></pre></td></tr></table></figure>
+<p>其中line8,9,10<br><figure class="highlight fortran"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">| `-ObjCMethodDecl x106c1e270 &lt;line:<span class="number">23</span>:<span class="number">1</span>, line:<span class="number">25</span>:<span class="number">1</span>&gt; line:<span class="number">23</span>:<span class="number">1</span> - sayHello <span class="string">'void'</span></span><br><span class="line">|   |-ImplicitParamDecl x106c1e300 &lt;&lt;invalid sloc&gt;&gt; &lt;invalid sloc&gt; <span class="type">implicit</span> self <span class="string">'NSObject *'</span></span><br><span class="line">|   |-ImplicitParamDecl x106c1e360 &lt;&lt;invalid sloc&gt;&gt; &lt;invalid sloc&gt; <span class="type">implicit</span> _cmd <span class="string">'SEL'</span>:<span class="string">'SEL *'</span></span><br></pre></td></tr></table></figure></p>
+<p>根据该AST-方法声明节点<code>-ObjCMethodDecl</code>可看出编译器为类别中的方法：<br><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)sayHello&#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@"hello world"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>添加了2个隐藏参数<code>ImplicitParamDecl</code>:</p>
+<ol>
+<li><code>implicit self &#39;NSObject</code></li>
+<li><code>implicit _cmd &#39;SEL&#39;:&#39;SEL *&#39;</code></li>
+</ol>
+<p>这就是Objective-C运行时系统中消息发送函数<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">id <span class="title">objc_msgSend</span><span class="params">(id self,SEL _cmd,...)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>的2个隐藏参数：</p>
+<ol>
+<li>self 当前方法的调用对象</li>
+<li>_cmd 当前方法的selector</li>
+</ol>
+<div class="well">在程序的编译阶段，编译器将根据运行时系统的运行时库（runtime library)生成用于运行阶段执行的方法和数据结构，给runtime system提供运行时支持。</div>
+
+<p>在这里，编译器已经开始进行代码改写，把Objective-C的数据结构，消息传递改写以生成使用了Objective-C运行时系统库的代码，以配合运行时runtime system的合法执行。</p>
+<h2 id="运行时支持，中间代码生成">运行时支持，中间代码生成</h2><p>一切分析通过后，编译器利用此时的AST进行运行时支持和中间代码生成，转换为中间码<a href="http://llvm.org/docs/LangRef.html" target="_blank" rel="external">LLVM IR</a>。<br>运行时支持包括提供运行数据结构支持，和代码改写。<br>可以使用命令改写为C代码，进行一定的参考：<br><code>clang -rewrite-objc</code> 改写为C代码<br>这个阶段最后编译器将上一阶段的输出进一步转换为中间码，以提供平台无关的支持。<br><code>clang -S -emit-llvm</code> 生成LLVM IR<br>示例程序改写的C代码全文可参见：<a href="/rawcode/main_cpp.html" target="_blank">CPP代码</a><br>示例程序生成的LLVM中间码全文可参见：<a href="/rawcode/main_ll.html" target="_blank">LLVM IR中间码</a><br>粗略翻看一下，有不少眼熟的东西：<br>对比一下就比较清晰了。</p>
+<ol>
+<li><p>Objective-C 示例程序<a href="#more">源代码</a></p>
+</li>
+<li><p>改写的C代码：</p>
+ <figure class="highlight cpp"><figcaption><span>Rewrite</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="keyword">_prop_t</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *attributes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="keyword">_protocol_t</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> _objc_method &#123;</span><br><span class="line">    <span class="keyword">struct</span> objc_selector * _cmd;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *method_type;</span><br><span class="line">    <span class="keyword">void</span>  *_imp;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="keyword">_protocol_t</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> * isa;  <span class="comment">// NULL</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *protocol_name;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">_protocol_list_t</span> * protocol_list; <span class="comment">// super protocols</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">method_list_t</span> *instance_methods;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">method_list_t</span> *class_methods;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">method_list_t</span> *optionalInstanceMethods;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">method_list_t</span> *optionalClassMethods;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">_prop_list_t</span> * properties;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> size;  <span class="comment">// sizeof(struct _protocol_t)</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">int</span> flags;  <span class="comment">// = 0</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> ** extendedMethodTypes;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="keyword">_ivar_t</span> &#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">long</span> <span class="keyword">int</span> *offset;  <span class="comment">// pointer to ivar offset location</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *type;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> alignment;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span>  size;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="keyword">_class_ro_t</span> &#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> flags;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> instanceStart;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> instanceSize;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> reserved;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *ivarLayout;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">_method_list_t</span> *baseMethods;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> _objc_protocol_list *baseProtocols;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">_ivar_list_t</span> *ivars;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">unsigned</span> <span class="keyword">char</span> *weakIvarLayout;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">_prop_list_t</span> *properties;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="keyword">_class_t</span> &#123;</span><br><span class="line">    <span class="keyword">struct</span> <span class="keyword">_class_t</span> *isa;</span><br><span class="line">    <span class="keyword">struct</span> <span class="keyword">_class_t</span> *superclass;</span><br><span class="line">    <span class="keyword">void</span> *cache;</span><br><span class="line">    <span class="keyword">void</span> *vtable;</span><br><span class="line">    <span class="keyword">struct</span> <span class="keyword">_class_ro_t</span> *ro;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="keyword">_category_t</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">char</span> *name;</span><br><span class="line">    <span class="keyword">struct</span> <span class="keyword">_class_t</span> *cls;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">_method_list_t</span> *instance_methods;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">_method_list_t</span> *class_methods;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">_protocol_list_t</span> *protocols;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">struct</span> <span class="keyword">_prop_list_t</span> *properties;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>生成的中间码：</p>
+ <figure class="highlight bash"><figcaption><span>LLVM IR</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">%struct.NSConstantString = <span class="built_in">type</span> &#123; i32*, i32, i8*, i64 &#125;</span><br><span class="line">%struct._class_t = <span class="built_in">type</span> &#123; %struct._class_t*, %struct._class_t*, %struct._objc_cache*, i8* (i8*, i8*)**, %struct._class_ro_t* &#125;</span><br><span class="line">%struct._objc_cache = <span class="built_in">type</span> opaque</span><br><span class="line">%struct._class_ro_t = <span class="built_in">type</span> &#123; i32, i32, i32, i8*, i8*, %struct.__method_list_t*, %struct._objc_protocol_list*, %struct._ivar_list_t*, i8*, %struct._prop_list_t* &#125;</span><br><span class="line">%struct.__method_list_t = <span class="built_in">type</span> &#123; i32, i32, [<span class="number">0</span> x %struct._objc_method] &#125;</span><br><span class="line">%struct._objc_method = <span class="built_in">type</span> &#123; i8*, i8*, i8* &#125;</span><br><span class="line">%struct._objc_protocol_list = <span class="built_in">type</span> &#123; i64, [<span class="number">0</span> x %struct._protocol_t*] &#125;</span><br><span class="line">%struct._protocol_t = <span class="built_in">type</span> &#123; i8*, i8*, %struct._objc_protocol_list*, %struct.__method_list_t*, %struct.__method_list_t*, %struct.__method_list_t*, %struct.__method_list_t*, %struct._prop_list_t*, i32, i32, i8** &#125;</span><br><span class="line">%struct._ivar_list_t = <span class="built_in">type</span> &#123; i32, i32, [<span class="number">0</span> x %struct._ivar_t] &#125;</span><br><span class="line">%struct._ivar_t = <span class="built_in">type</span> &#123; i64*, i8*, i8*, i32, i32 &#125;</span><br><span class="line">%struct._prop_list_t = <span class="built_in">type</span> &#123; i32, i32, [<span class="number">0</span> x %struct._prop_t] &#125;</span><br><span class="line">%struct._prop_t = <span class="built_in">type</span> &#123; i8*, i8* &#125;</span><br><span class="line">%struct._category_t = <span class="built_in">type</span> &#123; i8*, %struct._class_t*, %struct.__method_list_t*, %struct.__method_list_t*, %struct._objc_protocol_list*, %struct._prop_list_t* &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>可以比较清晰地看到接口，类别，协议，方法等都根据runtime library改写为了特殊的结构体数据结构。</p>
+<hr>
+<p>消息传递也改写为了:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">id <span class="title">objc_msgSend</span><span class="params">(id self,SEL _cmd,...)</span></span>;</span><br></pre></td></tr></table></figure></p>
+<p>消息传递变成方法调用，这也是编译器提供运行时支持比较典型的例子。<br>节选main函数的代码部分来仔细看一下：<br><figure class="highlight cpp"><figcaption><span>C</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    <span class="comment">/* @autoreleasepool */</span> &#123; __AtAutoreleasePool __autoreleasepool;</span><br><span class="line"></span><br><span class="line">    id jackson = ((People *(*)(id, SEL))(<span class="keyword">void</span> *)objc_msgSend)((id)((People *(*)(id, SEL))(<span class="keyword">void</span> *)objc_msgSend)((id)objc_getClass(<span class="string">"People"</span>), sel_registerName(<span class="string">"alloc"</span>)), sel_registerName(<span class="string">"init"</span>));</span><br><span class="line">    ((<span class="keyword">void</span>(*)(id, SEL))(<span class="keyword">void</span> *)objc_msgSend)((id)objc_getClass(<span class="string">"People"</span>), sel_registerName(<span class="string">"hello"</span>));</span><br><span class="line">    ((<span class="keyword">void</span>(*)(id, SEL))(<span class="keyword">void</span> *)objc_msgSend)((id)jackson, sel_registerName(<span class="string">"hello"</span>));</span><br><span class="line">    ((<span class="keyword">void</span>(*)(id, SEL))(<span class="keyword">void</span> *)objc_msgSend)((id)jackson, sel_registerName(<span class="string">"sayHelloAgain"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><figcaption><span>LLVM IR</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">; Function Attrs: ssp uwtable</span><br><span class="line">define i32 @main(i32 %argc, i8** %argv) <span class="comment">#0 &#123;</span></span><br><span class="line">  %<span class="number">1</span> = alloca i32, align <span class="number">4</span></span><br><span class="line">  %<span class="number">2</span> = alloca i32, align <span class="number">4</span></span><br><span class="line">  %<span class="number">3</span> = alloca i8**, align <span class="number">8</span></span><br><span class="line">  %jackson = alloca i8*, align <span class="number">8</span></span><br><span class="line">  store i32 <span class="number">0</span>, i32* %<span class="number">1</span></span><br><span class="line">  store i32 %argc, i32* %<span class="number">2</span>, align <span class="number">4</span></span><br><span class="line">  store i8** %argv, i8*** %<span class="number">3</span>, align <span class="number">8</span></span><br><span class="line">  %<span class="number">4</span> = call i8* @objc_autoreleasePoolPush() <span class="comment">#3</span></span><br><span class="line">  %<span class="number">5</span> = load %struct._class_t** @<span class="string">"\01L_OBJC_CLASSLIST_REFERENCES_<span class="variable">$_</span>"</span></span><br><span class="line">  %<span class="number">6</span> = load i8** @<span class="string">"\01L_OBJC_SELECTOR_REFERENCES_54"</span>, !invariant.load !<span class="number">5</span></span><br><span class="line">  %<span class="number">7</span> = bitcast %struct._class_t* %<span class="number">5</span> to i8*</span><br><span class="line">  %<span class="number">8</span> = call i8* bitcast (i8* (i8*, i8*, ...)* @objc_msgSend to i8* (i8*, i8*)*)(i8* %<span class="number">7</span>, i8* %<span class="number">6</span>)</span><br><span class="line">  %<span class="number">9</span> = bitcast i8* %<span class="number">8</span> to %<span class="number">1</span>*</span><br><span class="line">  %<span class="number">10</span> = load i8** @<span class="string">"\01L_OBJC_SELECTOR_REFERENCES_56"</span>, !invariant.load !<span class="number">5</span></span><br><span class="line">  %<span class="number">11</span> = bitcast %<span class="number">1</span>* %<span class="number">9</span> to i8*</span><br><span class="line">  %<span class="number">12</span> = call i8* bitcast (i8* (i8*, i8*, ...)* @objc_msgSend to i8* (i8*, i8*)*)(i8* %<span class="number">11</span>, i8* %<span class="number">10</span>)</span><br><span class="line">  %<span class="number">13</span> = bitcast i8* %<span class="number">12</span> to %<span class="number">1</span>*</span><br><span class="line">  %<span class="number">14</span> = bitcast %<span class="number">1</span>* %<span class="number">13</span> to i8*</span><br><span class="line">  store i8* %<span class="number">14</span>, i8** %jackson, align <span class="number">8</span></span><br><span class="line">  %<span class="number">15</span> = load %struct._class_t** @<span class="string">"\01L_OBJC_CLASSLIST_REFERENCES_<span class="variable">$_</span>"</span></span><br><span class="line">  %<span class="number">16</span> = load i8** @<span class="string">"\01L_OBJC_SELECTOR_REFERENCES_6"</span>, !invariant.load !<span class="number">5</span></span><br><span class="line">  %<span class="number">17</span> = bitcast %struct._class_t* %<span class="number">15</span> to i8*</span><br><span class="line">  call void bitcast (i8* (i8*, i8*, ...)* @objc_msgSend to void (i8*, i8*)*)(i8* %<span class="number">17</span>, i8* %<span class="number">16</span>)</span><br><span class="line">  %<span class="number">18</span> = load i8** %jackson, align <span class="number">8</span></span><br><span class="line">  %<span class="number">19</span> = load i8** @<span class="string">"\01L_OBJC_SELECTOR_REFERENCES_6"</span>, !invariant.load !<span class="number">5</span></span><br><span class="line">  call void bitcast (i8* (i8*, i8*, ...)* @objc_msgSend to void (i8*, i8*)*)(i8* %<span class="number">18</span>, i8* %<span class="number">19</span>)</span><br><span class="line">  %<span class="number">20</span> = load i8** %jackson, align <span class="number">8</span></span><br><span class="line">  %<span class="number">21</span> = load i8** @<span class="string">"\01L_OBJC_SELECTOR_REFERENCES_57"</span>, !invariant.load !<span class="number">5</span></span><br><span class="line">  call void bitcast (i8* (i8*, i8*, ...)* @objc_msgSend to void (i8*, i8*)*)(i8* %<span class="number">20</span>, i8* %<span class="number">21</span>)</span><br><span class="line">  call void @objc_autoreleasePoolPop(i8* %<span class="number">4</span>)</span><br><span class="line">  ret i32 <span class="number">0</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其实llvm ir中间表示还是很有可读性的。</p>
+<p>这些结构体定义和消息函数定义都可以在Runtime中找到：<a href="http://opensource.apple.com/source/objc4/objc4-647/runtime/runtime.h" target="_blank" rel="external">/runtime/runtime.h</a></p>
+<h1 id="3:_assembler_汇编">3: assembler 汇编</h1><p>最后编译器将代码优化后，将其汇编成为汇编代码。<br>汇编代码可以由<br><code>clang -S</code>命令查看。<br>得到<a href="/rawcode/main_s.html" target="_blank">Assembler</a>。<br>整体上看上去还是很眼熟的。<br>可以体会到从源代码-&gt;AST-&gt;改写C-&gt;llvm-&gt;assembler的痕迹。<br>编译器还剩下的最后一个翻译步骤是将现在的汇编代码汇编成目标的机器码，生成目标文件&quot;.o&quot;。<br>可以使用命令：<br><code>clang -c</code>得到汇编后的输出&quot;.o&quot;。文件中的内容是机器码，只能使用反汇编查看其中的内容。<br>命令<code>nm -nm</code>可以得到目标文件中的<a href="/rawcode/main_nm.html" target="_blank">符号表</a>。<br>符号表是编译器用来保存源代码构造的各种信息的数据结构。这些数据在分析阶段被逐步收集，符号表每个条目都包括与一个标示符相关的信息，如一个函数名字，它的参数数量，参数类型，参数的传递方法，返回信息等信息。<br>如：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0000000000000000</span> (__TEXT,__text) non-external -[NSObject(MyObject) sayHello]</span><br><span class="line">                 (undefined) <span class="function">external <span class="title">_NSLog</span></span><br><span class="line">                 <span class="params">(undefined)</span> external _OBJC_CLASS_$<span class="title">_NSObject</span></span><br><span class="line">                 <span class="params">(undefined)</span> external _OBJC_METACLASS_$<span class="title">_NSObject</span></span><br><span class="line">                 <span class="params">(undefined)</span> external <span class="title">___CFConstantStringClassReference</span></span><br><span class="line">                 <span class="params">(undefined)</span> external <span class="title">__objc_empty_cache</span></span><br><span class="line">                 <span class="params">(undefined)</span> external <span class="title">_objc_autoreleasePoolPop</span></span><br><span class="line">                 <span class="params">(undefined)</span> external <span class="title">_objc_autoreleasePoolPush</span></span><br><span class="line">                 <span class="params">(undefined)</span> external _objc_msgSend</span><br><span class="line">0000000000000030 <span class="params">(__TEXT,__text)</span> non-external +[People hello]</span><br><span class="line">0000000000000060 <span class="params">(__TEXT,__text)</span> non-external -[People hello]</span><br><span class="line">00000000000000<span class="title">d0</span> <span class="params">(__TEXT,__text)</span> non-external -[People sayHelloAgain]</span><br><span class="line">0000000000000110 <span class="params">(__TEXT,__text)</span> external _main</span><br><span class="line">00000000000001<span class="title">a2</span> <span class="params">(__TEXT,__cstring)</span> non-external L_.str</span><br><span class="line">00000000000001<span class="title">ae</span> <span class="params">(__TEXT,__cstring)</span> non-external L_.str1</span><br><span class="line">00000000000001<span class="title">bb</span> <span class="params">(__TEXT,__cstring)</span> non-external L_.str3</span><br><span class="line">00000000000001<span class="title">c4</span> <span class="params">(__TEXT,__cstring)</span> non-external L_OBJC_PROP_NAME_ATTR_</span><br><span class="line">00000000000001<span class="title">c9</span> <span class="params">(__TEXT,__cstring)</span> non-external L_OBJC_PROP_NAME_ATTR_45</span><br><span class="line">略··</span></span><br></pre></td></tr></table></figure></p>
+<p>可以看到<code>_NSLog</code>, <code>_OBJC_CLASS_$_NSObject</code>，<code>_objc_msgSend</code>等符号都是<code>(undefined)</code></p>
+<h1 id="4:_link_链接">4: link 链接</h1><p>汇编后的目标文件与与其他需要的目标文件链接以生成可执行文件。<br>如示例程序需要与Foundation框架链接以生成可执行程序。<br>执行命令：<br><code>clang -framework Foundation main.o</code><br>此时在查看符号表<br><code>nm -nm a.out</code><br>得到：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">                 (undefined) <span class="function">external <span class="title">_NSLog</span> <span class="params">(from Foundation)</span></span><br><span class="line">                 <span class="params">(undefined)</span> external _OBJC_CLASS_$<span class="title">_NSObject</span> <span class="params">(from CoreFoundation)</span></span><br><span class="line">                 <span class="params">(undefined)</span> external _OBJC_METACLASS_$<span class="title">_NSObject</span> <span class="params">(from CoreFoundation)</span></span><br><span class="line">                 <span class="params">(undefined)</span> external <span class="title">___CFConstantStringClassReference</span> <span class="params">(from CoreFoundation)</span></span><br><span class="line">                 <span class="params">(undefined)</span> external <span class="title">__objc_empty_cache</span> <span class="params">(from libobjc)</span></span><br><span class="line">                 <span class="params">(undefined)</span> external <span class="title">_objc_autoreleasePoolPop</span> <span class="params">(from libobjc)</span></span><br><span class="line">                 <span class="params">(undefined)</span> external <span class="title">_objc_autoreleasePoolPush</span> <span class="params">(from libobjc)</span></span><br><span class="line">                 <span class="params">(undefined)</span> external <span class="title">_objc_msgSend</span> <span class="params">(from libobjc)</span></span><br><span class="line">                 <span class="params">(undefined)</span> external <span class="title">dyld_stub_binder</span> <span class="params">(from libSystem)</span></span><br><span class="line">0000000100000000 <span class="params">(__TEXT,__text)</span> [referenced dynamically] external __mh_execute_header</span><br><span class="line">0000000100000<span class="title">b20</span> <span class="params">(__TEXT,__text)</span> non-external -[<span class="title">NSObject</span><span class="params">(MyObject)</span> sayHello]</span><br><span class="line">0000000100000<span class="title">b50</span> <span class="params">(__TEXT,__text)</span> non-external +[People hello]</span><br><span class="line">0000000100000<span class="title">b80</span> <span class="params">(__TEXT,__text)</span> non-external -[People hello]</span><br><span class="line">0000000100000<span class="title">bf0</span> <span class="params">(__TEXT,__text)</span> non-external -[People sayHelloAgain]</span><br><span class="line">0000000100000<span class="title">c30</span> <span class="params">(__TEXT,__text)</span> external _main</span><br><span class="line">00000001000015<span class="title">c0</span> <span class="params">(__DATA,__objc_ivar)</span> external _OBJC_IVAR_$_People.sum</span><br><span class="line">00000001000015<span class="title">c8</span> <span class="params">(__DATA,__objc_data)</span> external _OBJC_METACLASS_$_People</span><br><span class="line">00000001000015<span class="title">f0</span> <span class="params">(__DATA,__objc_data)</span> external _OBJC_CLASS_$_People</span></span><br></pre></td></tr></table></figure>
+<p>经过链接后新生产的符号表已经发生了变化：<br>可以看到1-4行 <code>(undefined)</code>的符号后都多出了来源信息,<code>Foundation</code>,<code>CoreFoundation</code>框架因<code>-framework Foundation</code>指令进行了链接。<br>5-8行：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">(undefined) <span class="function">external <span class="title">__objc_empty_cache</span> <span class="params">(from libobjc)</span></span><br><span class="line"><span class="params">(undefined)</span> external <span class="title">_objc_autoreleasePoolPop</span> <span class="params">(from libobjc)</span></span><br><span class="line"><span class="params">(undefined)</span> external <span class="title">_objc_autoreleasePoolPush</span> <span class="params">(from libobjc)</span></span><br><span class="line"><span class="params">(undefined)</span> external <span class="title">_objc_msgSend</span> <span class="params">(from libobjc)</span></span></span><br></pre></td></tr></table></figure></p>
+<p><code>_objc_empty_cache</code>，<code>_objc_msgSend</code> 都<code>(from libobjc)</code><br>这里的libobjc正是运行时系统所在的库，这些服务都来源于Runtime, runtime system也正是在链接阶段动态链接进来的。</p>
+<p>至此，万事俱备：<br><code>./a.out</code><br>终于看到了<code>hello world</code>.<br>源-&gt;tokens-&gt;AST-&gt;运行时支持-&gt;llvm-&gt;object code确是漫漫长路。</p>
+<h1 id="续,Todo">续,Todo</h1><p>始于初见，止于终老。<br>对于Objective-C，初见很简单：Objective，C。2个单词构成的名字，不那么简洁，但也算恰到好处。细看一下：<br>姓: C<br>名: Objective<br>似乎已经自我介绍得蛮清楚了。<br>95%C的特性——毕竟姓C。<br>另外剩下的就是Objective了。那么关于Objective，又从何说起呢。<br>正是从此开始。<br>从上面可以看到，编译器将Objective-C代码根据runtime library改写为特别的C数据结构和方法以配合Runtime来支持其Objective的特性。<br>Runtime是Objective-C的操作系统，是其一切动态性的来源。每一个程序都有自己对应的运行时，在程序启动时加载。<br>那么在a.out之后，程序正式开始之前（main函数开始执行），Runtime又是如何加载进来的呢？<br>引入新问题：静态链接，动态链接，dyld。<br>关于这方面参考链接：<br><a href="https://www.mikeash.com/pyblog/friday-qa-2012-11-09-dyld-dynamic-linking-on-os-x.html" target="_blank" rel="external">dyld: Dynamic Linking On OS X</a>.<br><a href="http://ddeville.me/2014/04/dynamic-linking/" target="_blank" rel="external">Dynamic linking on iOS</a><br><a href="http://blog.sunnyxx.com/2014/08/30/objc-pre-main/" target="_blank" rel="external">iOS程序main函数之前发生了什么</a></p>
+<h1 id="References">References</h1><ol>
+<li><a class="btn btn-default" href="http://clang.llvm.org/docs/CommandGuide/clang.html#cmdoption-c" target="_blank" rel="external">Clang</a>
+</li>
+<li><a class="btn btn-default" href="https://gcc.gnu.org/onlinedocs/cpp/" target="_blank" rel="external">The_C_Preprocessor</a>
+</li>
+<li><a class="btn btn-default" href="http://nshipster.com/at-compiler-directives/" target="_blank" rel="external">Complete-List_ObjectiveC-2.0_Compiler_Directives</a>
+</li>
+<li><a class="btn btn-default" href="http://opensource.apple.com/source/objc4/objc4-647/runtime/" target="_blank" rel="external">Objective-C_Runtime_SourceCode</a>
+</li>
+<li><a class="btn btn-default" href="http://www.unix.com/man-page/opensolaris/1/nm/" target="_blank" rel="external">nm(1)——[UNIX-nm]</a>
+</li>
+</ol>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Objective-C/" rel="tag">#Objective-C</a>
+          
+            <a href="/tags/compiler/" rel="tag">#compiler</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/07/15/iOS/runtime/iOS_objc_runtime_数据结构/" rel="prev">Objective-C--Runtime--数据结构</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/05/24/iOS/runtime/iOS_objc_runtime_about/" rel="next">Objective-C——Runtime</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+            </div>
+
+            
+
+            
+              <div class="comments" id="comments">
+                
+              </div>
+            
+        </div>
+
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目錄
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            本站概覽
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/img/logo.png" alt="Zero" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Zero</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">Zero's Blog | iOS学习日志</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/">
+              <span class="site-state-item-count">5</span>
+              <span class="site-state-item-name">文章</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            <a href="/categories">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">分類</span>
+              </a>
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">3</span>
+              <span class="site-state-item-name">標籤</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/hitlolo" target="_blank">github</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+            <p class="site-author-name">Links</p>
+            
+              <span class="links-of-author-item">
+              <a href="https://developer.apple.com/library" target="_blank">Apple Lib</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://developer.android.com/index.html" target="_blank">Android</a>
+              </span>
+            
+              <span class="links-of-author-item">
+              <a href="http://stackoverflow.com/" target="_blank">StackOverflow</a>
+              </span>
+            
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#序"><span class="nav-number">1.</span> <span class="nav-text">序</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#1:_preprocessor_预处理"><span class="nav-number">2.</span> <span class="nav-text">1: preprocessor 预处理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2:_compiler_编译"><span class="nav-number">3.</span> <span class="nav-text">2: compiler 编译</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#词法分析（Lexcical_Analysis）"><span class="nav-number">3.1.</span> <span class="nav-text">词法分析（Lexcical Analysis）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语法分析（Syntax_Analysis）"><span class="nav-number">3.2.</span> <span class="nav-text">语法分析（Syntax Analysis）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#语义分析（Semantic_Analysis）"><span class="nav-number">3.3.</span> <span class="nav-text">语义分析（Semantic Analysis）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行时支持，中间代码生成"><span class="nav-number">3.4.</span> <span class="nav-text">运行时支持，中间代码生成</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3:_assembler_汇编"><span class="nav-number">4.</span> <span class="nav-text">3: assembler 汇编</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4:_link_链接"><span class="nav-number">5.</span> <span class="nav-text">4: link 链接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#续,Todo"><span class="nav-number">6.</span> <span class="nav-text">续,Todo</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#References"><span class="nav-number">7.</span> <span class="nav-text">References</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+        <div class="footer-inner">
+            
+
+
+
+<div class="copyright">
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-heart"></i>
+  </span>
+  
+  <span class="author" itemprop="copyrightHolder">Zero</span>
+ 
+
+
+</div>
+
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 強力驅動
+</div>
+
+<div class="theme-info">
+  主題 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+
+        </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+</div>
+
+<script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+    
+
+  
+
+
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.4"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.4"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.4" id="motion.global"></script>
+
+
+
+  <script type="text/javascript" src="/js/search-toggle.js"></script>
+
+
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.4" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (CONFIG.sidebar === 'always') {
+            displaySidebar();
+        }
+    });
+</script>
+
+
+
+
+
+
+
+
+<!-- lazyload -->
+<script type="text/javascript" src="/js/lazyload.js"></script>
+<script type="text/javascript">
+    jQuery(function () {
+        jQuery("#posts img").lazyload({
+            placeholder: "/images/loading.gif",
+            effect: "fadeIn"
+        });
+    });
+</script>
+</body>
+</html>

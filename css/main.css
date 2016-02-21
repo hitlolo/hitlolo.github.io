@@ -1159,7 +1159,7 @@ body {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #7ae5d7;
+  background: #425ed2;
 }
 .sidebar-nav {
   margin: 0;
@@ -3297,12 +3297,6 @@ optgroup {
   content: "\e260";
 }
 
-*:before,
-*:after {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
 
 input,
 button,
@@ -4229,6 +4223,7 @@ a.badge:focus {
   text-decoration: none;
   cursor: pointer;
 }
+
 .list-group-item.active > .badge,
 .nav-pills > .active > a > .badge {
   color: #337ab7;
@@ -4416,6 +4411,7 @@ a.badge:focus {
   margin-bottom: 20px;
   padding-left: 0;
 }
+
 .list-group-item {
   position: relative;
   display: block;
