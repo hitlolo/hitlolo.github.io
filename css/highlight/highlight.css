@@ -2,9 +2,8 @@
 .post .highlight {
   background: #f7f7f7;
   margin: 20px 0;
-  font-size: 13px;
   color: #4d4d4c;
-  line-height: $line-height-code-block;
+  line-height: 1.2;
 }
 .post .highlight .gutter pre,
 .post .gist .gist-file .gist-data .line-numbers {
@@ -12,10 +11,10 @@
 }
 .post pre,
 .post code {
-  font-family: "PT Mono", Consolas, Monaco, Menlo, monospace;
+  font-family: "PT Mono", Consolas, Monaco, monospace;
 }
 .post code {
-  background: $gainsboro;
+  background: #eee;
   text-shadow: 0 1px #fff;
   padding: 0 0.3em;
 }
