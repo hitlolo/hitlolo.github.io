@@ -8,7 +8,7 @@
 body {
   background-color: #FFF;
   color: #444;
-  font-family: "Times New Roman","Hiragino Sans GB","Microsoft Jhenghei","TIBch", "Classic Grotesque W01", "Helvetica Neue", Arial, "STHeiti", "Microsoft YaHei", "WenQuanYi Micro Hei", SimSun;
+  font-family: Arial,"Hiragino Sans GB","TIBch", "Classic Grotesque W01", "Helvetica Neue", "STHeiti", "WenQuanYi Micro Hei", SimSun;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px; }
@@ -56,6 +56,8 @@ a:focus {
       margin: 0;
       height: 0;
       overflow: hidden; }
+      #header .site-name h1 em {
+        color: #cf4a17; }
     #header .site-name #logo {
       font: bold 38px/1.12 "Times New Roman", Georgia, Times, sans-serif;
       color: #555; }
@@ -169,7 +171,7 @@ a:focus {
     margin: 0;
     color: #555;
     text-align: left;
-    font: bold 25px/1.1 "ff-tisa-web-pro", Cambria, "Times New Roman", Georgia, Times, sans-serif; }
+    font: bold 25px/1.1 "ff-tisa-web-pro", Georgia,serif, ambria, sans-serif; }
     .post .post-title a {
       color: #555; }
   .post .post-meta {
@@ -220,6 +222,7 @@ a:focus {
   .post .post-content {
     clear: left;
     font-size: 15px;
+    font-family: Arial,'Helvetica Neue',Helvetica,"Avenir", "Avenir Next", "Helvetica Neue", sans-serif;
     line-height: 1.77;
     color: #444;
     padding-top: 15px;
@@ -243,7 +246,7 @@ a:focus {
         border: 1px solid #ccc;
         background: #eee; }
       .post .post-content p a {
-        color: #01579f;
+        color: #0C8C83;
         padding-bottom: 2px;
         word-break: break-all; }
         .post .post-content p a:hover {
@@ -382,19 +385,40 @@ blockquote, .stressed {
   color: #555;
   border-left: none; }
 
-blockquote:before, .stressed-quote:before {
-  content: "\201C";
+/*blockquote:before,.stressed-quote:before {
+    content: "\201C";
+    display: block;
+    font-family: times;
+    font-style: normal;
+    font-size: 48px;
+    color: #444;
+    font-weight: bold;
+    line-height: 30px;
+    margin-left: -50px;
+    position: absolute;
+}
+*/
+blockquote {
   display: block;
-  font-family: times;
+  background: #f9f9f9;
+  padding: 0 15px;
+  color: #666;
+  font-family: sans-serif;
   font-style: normal;
-  font-size: 48px;
-  color: #444;
-  font-weight: bold;
-  line-height: 30px;
-  margin-left: -50px;
-  position: absolute; }
+  border-left: 6px solid #ddd;
+  font-size: 100%;
+  line-height: 30px; }
+  blockquote cite::before {
+    content: "-";
+    padding: 0 5px; }
+  blockquote a {
+    color: #EAA7A7; }
 
-strong, b, em {
+em {
+  font-style: normal;
+  color: #d46a32; }
+
+strong, b {
   font-weight: bold; }
 
 pre {
