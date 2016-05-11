@@ -115,15 +115,28 @@ a:focus {
         line-height: 1.5;
         padding: 5px; }
     #sidebar .widget ul, #sidebar .widget ol, #sidebar .widget dl {
+      font-size: 100%;
       list-style: none;
       text-align: left;
       margin: 0;
       padding: 0;
       line-height: 1.5; }
+      #sidebar .widget ul a, #sidebar .widget ol a, #sidebar .widget dl a {
+        opacity: 1.0; }
       #sidebar .widget ul ul, #sidebar .widget ul ol, #sidebar .widget ul dl, #sidebar .widget ol ul, #sidebar .widget ol ol, #sidebar .widget ol dl, #sidebar .widget dl ul, #sidebar .widget dl ol, #sidebar .widget dl dl {
+        font-size: 90%;
         margin-left: 20px; }
+        #sidebar .widget ul ul a, #sidebar .widget ul ol a, #sidebar .widget ul dl a, #sidebar .widget ol ul a, #sidebar .widget ol ol a, #sidebar .widget ol dl a, #sidebar .widget dl ul a, #sidebar .widget dl ol a, #sidebar .widget dl dl a {
+          opacity: 0.9; }
         #sidebar .widget ul ul li:before, #sidebar .widget ul ol li:before, #sidebar .widget ul dl li:before, #sidebar .widget ol ul li:before, #sidebar .widget ol ol li:before, #sidebar .widget ol dl li:before, #sidebar .widget dl ul li:before, #sidebar .widget dl ol li:before, #sidebar .widget dl dl li:before {
           content: '>'; }
+        #sidebar .widget ul ul ul, #sidebar .widget ul ul ol, #sidebar .widget ul ul dl, #sidebar .widget ul ol ul, #sidebar .widget ul ol ol, #sidebar .widget ul ol dl, #sidebar .widget ul dl ul, #sidebar .widget ul dl ol, #sidebar .widget ul dl dl, #sidebar .widget ol ul ul, #sidebar .widget ol ul ol, #sidebar .widget ol ul dl, #sidebar .widget ol ol ul, #sidebar .widget ol ol ol, #sidebar .widget ol ol dl, #sidebar .widget ol dl ul, #sidebar .widget ol dl ol, #sidebar .widget ol dl dl, #sidebar .widget dl ul ul, #sidebar .widget dl ul ol, #sidebar .widget dl ul dl, #sidebar .widget dl ol ul, #sidebar .widget dl ol ol, #sidebar .widget dl ol dl, #sidebar .widget dl dl ul, #sidebar .widget dl dl ol, #sidebar .widget dl dl dl {
+          font-size: 80%;
+          margin-left: 20px; }
+          #sidebar .widget ul ul ul a, #sidebar .widget ul ul ol a, #sidebar .widget ul ul dl a, #sidebar .widget ul ol ul a, #sidebar .widget ul ol ol a, #sidebar .widget ul ol dl a, #sidebar .widget ul dl ul a, #sidebar .widget ul dl ol a, #sidebar .widget ul dl dl a, #sidebar .widget ol ul ul a, #sidebar .widget ol ul ol a, #sidebar .widget ol ul dl a, #sidebar .widget ol ol ul a, #sidebar .widget ol ol ol a, #sidebar .widget ol ol dl a, #sidebar .widget ol dl ul a, #sidebar .widget ol dl ol a, #sidebar .widget ol dl dl a, #sidebar .widget dl ul ul a, #sidebar .widget dl ul ol a, #sidebar .widget dl ul dl a, #sidebar .widget dl ol ul a, #sidebar .widget dl ol ol a, #sidebar .widget dl ol dl a, #sidebar .widget dl dl ul a, #sidebar .widget dl dl ol a, #sidebar .widget dl dl dl a {
+            opacity: 0.85; }
+          #sidebar .widget ul ul ul li:before, #sidebar .widget ul ul ol li:before, #sidebar .widget ul ul dl li:before, #sidebar .widget ul ol ul li:before, #sidebar .widget ul ol ol li:before, #sidebar .widget ul ol dl li:before, #sidebar .widget ul dl ul li:before, #sidebar .widget ul dl ol li:before, #sidebar .widget ul dl dl li:before, #sidebar .widget ol ul ul li:before, #sidebar .widget ol ul ol li:before, #sidebar .widget ol ul dl li:before, #sidebar .widget ol ol ul li:before, #sidebar .widget ol ol ol li:before, #sidebar .widget ol ol dl li:before, #sidebar .widget ol dl ul li:before, #sidebar .widget ol dl ol li:before, #sidebar .widget ol dl dl li:before, #sidebar .widget dl ul ul li:before, #sidebar .widget dl ul ol li:before, #sidebar .widget dl ul dl li:before, #sidebar .widget dl ol ul li:before, #sidebar .widget dl ol ol li:before, #sidebar .widget dl ol dl li:before, #sidebar .widget dl dl ul li:before, #sidebar .widget dl dl ol li:before, #sidebar .widget dl dl dl li:before {
+            content: '>'; }
   #sidebar .search-form {
     position: relative;
     overflow: hidden; }
@@ -155,6 +168,13 @@ a:focus {
   font-size: 20px;
   font-weight: normal;
   color: #888; }
+  .label-title:before {
+    font-family: "FontAwesome";
+    content: "\f02d";
+    padding-right: 0.3em;
+    opacity: 1.0;
+    font-weight: normal;
+    color: #555; }
 
 .category-list-count {
   margin-left: 8px;
@@ -334,6 +354,7 @@ a:focus {
     padding: 5px 5px; }
 
 #footer {
+  text-align: center;
   padding: .8em 0 3.6em;
   margin-top: 1em;
   line-height: 1.5;
@@ -343,7 +364,7 @@ a:focus {
 
 /* for archive page starts*/
 .post-archive {
-  font-size: 15px;
+  font-size: 14px;
   line-height: 2;
   padding-bottom: .8em; }
   .post-archive h2 {
@@ -353,6 +374,16 @@ a:focus {
     padding-right: .7em; }
 
 /* for archive page ends*/
+.post-category {
+  font-size: 14px;
+  line-height: 2;
+  padding-bottom: .6em; }
+  .post-category h1 {
+    box-shadow: 5px 5px 5px rgba(183, 193, 153, 0.1);
+    font-weight: bold; }
+  .post-category .date {
+    padding-right: .7em; }
+
 /*<middle*/
 @media print, screen and (max-width: 48em) {
   .body_container {
