@@ -1,0 +1,128 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Zero's Blog | iOS学习日志"><meta name="keywords" content="Blog,Learn,Computer Science"><link rel="stylesheet" href="/css/hi.css"><link rel="stylesheet" href="/css/style.css"><title>Command+R</title><script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.hitlolo.com","root":"/","localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"path":"search.json"};
+  </script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="grid nav"><div class="row"><div class="col-12 col-md-3 col-md-offset-9"><div class="nav-meta"><a class="nav-meta__name" href="#">Command+R</a><p class="nav-meta__desc">Life doesn't have a ctrl-z. Type wisely.</p></div></div></div><div class="row"><input id="menu-checkbox" type="checkbox" aria-hidden="true"><label id="menu-switcher" role="button" for="menu-checkbox"> </label><div class="col-12 col-md-3 col-md-offset-9 nav-menu"><ol class="nav-menu__list"><li class="nav-menu__item"><a href="/"><i class="icofont-home"></i>主页</a></li><li class="nav-menu__item"><a href="/about/"><i class="icofont-beard"></i>关于</a></li></ol></div></div></div><div class="grid padding"> <div class="row"><div class="col-12 col-md-9">               <input id="search-checkbox" type="checkbox"><div class="post-container"><div class="post"><h1 class="post-title">npm常用辅助包</h1><div class="post-meta"><span class="post-meta__date"><i class="icofont-calendar"></i>Nov 26, 2020</span><span class="post-meta__category"><a href="/categories/Node-js/"><i class="icofont-folder-open"></i>Node-js</a><a href="/categories/Node-js/npm/"><i class="icofont-folder-open"></i>npm</a></span></div><div class="post-content"><h1 id="npm源切换"><a href="#npm源切换" class="headerlink" title="npm源切换"></a>npm源切换</h1><p>一般使用config命令设置源，但是需要去网上查询源地址，不方便。<br>npm官方源地址：<a target="_blank" rel="noopener" href="https://registry.npmjs.org/">https://registry.npmjs.org</a><br>淘宝源地址：<a target="_blank" rel="noopener" href="https://registry.npm.taobao.org/">https://registry.npm.taobao.org/</a></p>
+<figure class="highlight arduino"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//查看</span></span><br><span class="line">npm <span class="built_in">config</span> <span class="built_in">get</span> registry</span><br><span class="line"><span class="comment">//更新 </span></span><br><span class="line">npm <span class="built_in">config</span> <span class="built_in">set</span> registry https:<span class="comment">//registry.npm.taobao.org/</span></span><br></pre></td></tr></table></figure>
+<p>现在有nrm来维护源地址</p>
+<h2 id="辅助包nrm"><a href="#辅助包nrm" class="headerlink" title="辅助包nrm"></a>辅助包nrm</h2><p>安装nrm</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span> i -g nrm</span><br></pre></td></tr></table></figure>
+
+<p>查看可用源</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">nrm ls</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  npm ---- https:<span class="regexp">//</span>registry.npmjs.org/</span><br><span class="line">  cnpm --- http:<span class="regexp">//</span>r.cnpmjs.org/</span><br><span class="line">* taobao - https:<span class="regexp">//</span>registry.npm.taobao.org/</span><br><span class="line">  nj ----- https:<span class="regexp">//</span>registry.nodejitsu.com/</span><br><span class="line">  npmMirror  https:<span class="regexp">//</span>skimdb.npmjs.com<span class="regexp">/registry/</span></span><br><span class="line">  edunpm - http:<span class="regexp">//</span>registry.enpmjs.org/</span><br></pre></td></tr></table></figure>
+<p>切换源</p>
+<figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nrm <span class="keyword">use</span> taobao</span><br></pre></td></tr></table></figure>
+
+
+<h1 id="npm包更新"><a href="#npm包更新" class="headerlink" title="npm包更新"></a>npm包更新</h1><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span> i -g <span class="built_in">npm</span>-check</span><br></pre></td></tr></table></figure>
+
+<p>在项目根目录运行</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span>-check -u</span><br></pre></td></tr></table></figure>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">? Choose which packages <span class="keyword">to</span> <span class="keyword">update</span>. (Press <span class="symbol">&lt;space&gt;</span> <span class="keyword">to</span> select)</span><br><span class="line"></span><br><span class="line"> Non-Semver Versions less than <span class="number">1.0</span>.<span class="number">0</span>, caution.</span><br><span class="line">&gt;( ) hexo-<span class="keyword">tag</span>-bootstrap  <span class="number">0.1</span>.<span class="number">2</span>  ❯  <span class="number">0.2</span>.<span class="number">1</span>  http<span class="variable">s:</span>//github.<span class="keyword">com</span>/wzpan/hexo-<span class="keyword">tag</span>-bootstrap</span><br><span class="line"></span><br><span class="line"> Space <span class="keyword">to</span> select. Enter <span class="keyword">to</span> start upgrading. Control-C <span class="keyword">to</span> cancel.</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>npm-check列出更新包，空格切换包是否更新，Control + C 取消更新，回车就是执行更新。</p>
+</div><div class="post-meta"><div class="post-meta__tags"></div><i class="icofont-tags"></i><a class="label default" href="/tags/NODE-PATH/">NODE_PATH</a></div></div><nav class="breadcrumb"><a class="extend next" href="/2020/11/26/Node.js/npm/%E4%BF%AE%E6%94%B9npm%E5%8C%85%E7%9A%84%E9%BB%98%E8%AE%A4%E5%AE%89%E8%A3%85%E4%BD%8D%E7%BD%AE/">修改npm包默认安装路径<i class="icofont-double-right"></i></a></nav></div><div id="search-container"><div class="padding" id="search-result"><div class="loading"><span> </span><span> </span><span> </span><span> </span><span> </span></div><div id="no-result"></div></div><label id="search-switcher" for="search-checkbox"><i class="icofont-close"></i></label></div></div><div class="col-12 col-md-3 static"><aside class="sidebar padding"><div class="local-search"><span class="sidebar-title">搜索</span><form class="form"><input class="search-input" type="search" name="" placeholder="search"></form></div></aside><aside class="sidebar padding toc-container"><span class="sidebar-title">TOC</span><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#npm%E6%BA%90%E5%88%87%E6%8D%A2"><span class="toc-number">1.</span> <span class="toc-text">npm源切换</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BE%85%E5%8A%A9%E5%8C%85nrm"><span class="toc-number">1.1.</span> <span class="toc-text">辅助包nrm</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#npm%E5%8C%85%E6%9B%B4%E6%96%B0"><span class="toc-number">2.</span> <span class="toc-text">npm包更新</span></a></li></ol></aside><aside class="sidebar padding"><div class="categories"><a class="sidebar-title" href="/categories/">分类</a><ul class="tree"><li class="tree-item">
+                            <input id="cky4ddg4x000ngohta59x4kx7" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg4x000ngohta59x4kx7"></label>
+                            <a href="/categories/Android/">Android
+                            <span class="count">1</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Android/Graddle/">Graddle<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg4z000ugoht7wva974d" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg4z000ugoht7wva974d"></label>
+                            <a href="/categories/Front/">Front
+                            <span class="count">5</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg5y0044goht6bbz7cgl" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5y0044goht6bbz7cgl"></label>
+                            <a href="/categories/Front/CSS/">CSS
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg66004zgohth62w7tbb" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg66004zgohth62w7tbb"></label>
+                            <a href="/categories/Front/CSS/Cheatsheet/">Cheatsheet
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Front/CSS/Cheatsheet/Center/">Center<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Front/CSS/Cheatsheet/Triangle/">Triangle<span class="count">1</span></a>
+                </li></ul>
+                            </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/Front/Hexo/">Hexo<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Front/Webpack/">Webpack<span class="count">2</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg58001jgohtgcjo77pp" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg58001jgohtgcjo77pp"></label>
+                            <a href="/categories/iOS/">iOS
+                            <span class="count">26</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Cocoapods/">Cocoapods<span class="count">2</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Draw/">Draw<span class="count">1</span></a>
+                </li><li class="tree-item">
+                            <input id="cky4ddg5w003ogoht4kn2g4st" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5w003ogoht4kn2g4st"></label>
+                            <a href="/categories/iOS/Objective-C/">Objective-C
+                            <span class="count">17</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg670055gohtfbx25yvn" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg670055gohtfbx25yvn"></label>
+                            <a href="/categories/iOS/Objective-C/Essentials/">Essentials
+                            <span class="count">10</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Essentials/Basic/">Basic<span class="count">6</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Essentials/NSObject/">NSObject<span class="count">4</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Runtime/">Runtime<span class="count">7</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg62004lgoht57b90zu8" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg62004lgoht57b90zu8"></label>
+                            <a href="/categories/iOS/Persistence/">Persistence
+                            <span class="count">3</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Bundle/">Bundle<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Plist/">Plist<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Preferences/">Preferences<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg5x003xgohtaha32i59" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5x003xgohtaha32i59"></label>
+                            <a href="/categories/iOS/UIKit/">UIKit
+                            <span class="count">3</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/UIKit/Interface-Builder/">Interface Builder<span class="count">3</span></a>
+                </li></ul>
+                            </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg540019goht0qzabd7g" class="tree-checkbox" type="checkbox" aria-hidden="true" checked></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg540019goht0qzabd7g"></label>
+                            <a href="/categories/Node-js/">Node-js
+                            <span class="count">4</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg62004jgohtgiygcr5x" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg62004jgohtgiygcr5x"></label>
+                            <a href="/categories/Node-js/JavaScript/">JavaScript
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Node-js/JavaScript/Essentials/">Essentials<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Node-js/JavaScript/Object/">Object<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/Node-js/npm/">npm<span class="count">2</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/NSLog/">NSLog<span class="count">3</span></a>
+                </li></ul></div><div class="tags"><a class="sidebar-title" href="/tags/">标签</a><ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Center-in-CSS/" rel="tag">Center in CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NODE-PATH/" rel="tag">NODE_PATH</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSObject/" rel="tag">NSObject</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Triangle-in-CSS/" rel="tag">Triangle in CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/class/" rel="tag">class</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocoapods/" rel="tag">cocoapods</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/compiler/" rel="tag">compiler</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/draw/" rel="tag">draw</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dyld/" rel="tag">dyld</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/file/" rel="tag">file</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graddle/" rel="tag">graddle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/metaclass/" rel="tag">metaclass</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object/" rel="tag">object</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prototype/" rel="tag">prototype</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/runtime/" rel="tag">runtime</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/self/" rel="tag">self</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storyboard/" rel="tag">storyboard</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/super/" rel="tag">super</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/this/" rel="tag">this</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a><span class="tag-list-count">2</span></li></ul></div><div class="links"><a class="sidebar-title" href="#">通道</a><ul class="link-list"><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://developer.apple.com/library">Apple Dev</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://stackoverflow.com/">StackOverflow</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://www.cocoawithlove.com/">CocoaWithLove</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://www.mikeash.com/">MikeAsh</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://nshipster.com/">NSHipster</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://www.objc.io/">Objc</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://copypastecharacter.com/all-characters">Web Unicode Characters</a></li></ul></div></aside></div></div></div><div class="grid"> <div class="row"> <div class="col-12 col-md-9"> <div class="footer"><div class="copyright"> <span>©</span><a href="/">Command+R.</a><span>Powered by</span><a class="label default" target="_blank" rel="noopener" href="https://hexo.io">Hexo.</a><span>Theme by</span><a class="label default" href="#">Locke. </a></div></div></div></div></div>
+<script src="/js/local-search.js"></script>
+</body></html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Zero's Blog | iOS学习日志"><meta name="keywords" content="Blog,Learn,Computer Science"><link rel="stylesheet" href="/css/hi.css"><link rel="stylesheet" href="/css/style.css"><title>Command+R</title><script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.hitlolo.com","root":"/","localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"path":"search.json"};
+  </script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="grid nav"><div class="row"><div class="col-12 col-md-3 col-md-offset-9"><div class="nav-meta"><a class="nav-meta__name" href="#">Command+R</a><p class="nav-meta__desc">Life doesn't have a ctrl-z. Type wisely.</p></div></div></div><div class="row"><input id="menu-checkbox" type="checkbox" aria-hidden="true"><label id="menu-switcher" role="button" for="menu-checkbox"> </label><div class="col-12 col-md-3 col-md-offset-9 nav-menu"><ol class="nav-menu__list"><li class="nav-menu__item"><a href="/"><i class="icofont-home"></i>主页</a></li><li class="nav-menu__item"><a href="/about/"><i class="icofont-beard"></i>关于</a></li></ol></div></div></div><div class="grid padding"> <div class="row"><div class="col-12 col-md-9">               <input id="search-checkbox" type="checkbox"><div class="post-container"><div class="post"><h1 class="post-title">目录结构</h1><div class="post-meta"><span class="post-meta__date"><i class="icofont-calendar"></i>Oct 24, 2015</span><span class="post-meta__category"><a href="/categories/iOS/"><i class="icofont-folder-open"></i>iOS</a><a href="/categories/iOS/Persistence/"><i class="icofont-folder-open"></i>Persistence</a><a href="/categories/iOS/Persistence/Bundle/"><i class="icofont-folder-open"></i>Bundle</a></span></div><div class="post-content"><h3 id="概览"><a href="#概览" class="headerlink" title="概览"></a>概览</h3> <img src="http://ww4.sinaimg.cn/mw690/bfecc6a2gw1f728jvdecsj20la0n6gnm.jpg" width = "383" height = "417"  align=center />
+
+
+<table>
+<thead>
+<tr>
+<th>Directory</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MyApp.app</td>
+<td>应用程序的Bundle，包括应用程序本身和其所有资源。不可写，其中资源文件可读。<br>这个目录不会被iTunes同步</td>
+</tr>
+<tr>
+<td>Documents/</td>
+<td>使用这个目录来保存用户文件，文档。<br>这个目录会被iTunes同步</td>
+</tr>
+<tr>
+<td>Library/</td>
+<td>非用户文件。如应用程序需要的支持文件，配置文件。<br><em>Library/Application support/</em> 配置文件和支持文件。<br><em>Library/Preferences/</em>  NSUserDefaults的首选项数据。<br><em>Library/Caches/</em> 用以提高性能表现的缓存数据，比如网络数据。<br>这个目录（除了Library/Caches外）会被iTunes同步</td>
+</tr>
+<tr>
+<td>tmp/</td>
+<td>临时数据。当系统需要更多空间时，会选择将此目录清空。<br>这个目录不会被iTunes同步</td>
+</tr>
+</tbody></table>
+<h3 id="路径获取"><a href="#路径获取" class="headerlink" title="路径获取"></a>路径获取</h3><p>可以用两种方式来获取以上常用路径：</p>
+<ol>
+<li>Foundation提供的路径查询函数</li>
+<li>NSFileManager</li>
+</ol>
+<p>效果都一样，只是一个是Foundation层的C函数，一个是更友好的文件操作OC对象提供的方法。</p>
+<h4 id="Foundation函数"><a href="#Foundation函数" class="headerlink" title="Foundation函数"></a>Foundation函数</h4><p>沙盒根目录:</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> * <span class="built_in">NSHomeDirectory</span>(<span class="keyword">void</span>);</span><br></pre></td></tr></table></figure>
+
+<p>tem目录：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSString</span> * <span class="built_in">NSTemporaryDirectory</span>(<span class="keyword">void</span>);</span><br></pre></td></tr></table></figure>
+<p>Document和Library</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSArray</span>&lt;<span class="built_in">NSString</span> *&gt; * <span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSSearchPathDirectory</span> directory,</span><br><span class="line">                                                          <span class="built_in">NSSearchPathDomainMask</span> domainMask, </span><br><span class="line">                                                          <span class="built_in">BOOL</span> expandTilde);</span><br></pre></td></tr></table></figure>
+<p>如：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSArray</span> *paths = <span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSDocumentDirectory</span>, <span class="built_in">NSUserDomainMask</span>, <span class="literal">YES</span>);</span><br><span class="line"><span class="built_in">NSString</span> *docPath = [paths objectAtIndex:<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+<hr>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSArray</span> *paths = <span class="built_in">NSSearchPathForDirectoriesInDomains</span>(<span class="built_in">NSLibraryDirectory</span>, <span class="built_in">NSUserDomainMask</span>, <span class="literal">YES</span>);</span><br><span class="line"><span class="built_in">NSString</span> *libPath = [paths objectAtIndex:<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+
+<h4 id="NSFileManager"><a href="#NSFileManager" class="headerlink" title="NSFileManager"></a>NSFileManager</h4><p>官方更推荐使用NSFileManager的方法来获取目录：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">NSArray</span>&lt;<span class="built_in">NSURL</span> *&gt; *)URLsForDirectory:(<span class="built_in">NSSearchPathDirectory</span>)directory inDomains:(<span class="built_in">NSSearchPathDomainMask</span>)domainMask;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如：</p>
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSArray</span> *URLs = [[<span class="built_in">NSFileManager</span> defaultManager] URLsForDirectory:<span class="built_in">NSDocumentDirectory</span> inDomains:<span class="built_in">NSUserDomainMask</span>];</span><br><span class="line"><span class="built_in">NSURL</span> *documentsURL = URLs[<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">NSArray</span> *URLs = [[<span class="built_in">NSFileManager</span> defaultManager] URLsForDirectory:<span class="built_in">NSLibraryDirectory</span> inDomains:<span class="built_in">NSUserDomainMask</span>];</span><br><span class="line"><span class="built_in">NSURL</span> *documentsURL = URLs[<span class="number">0</span>];</span><br></pre></td></tr></table></figure>
+
+<p>以上的NSFileManager和NSSearchPathForDirectoriesInDomains函数中的参数<em>NSSearchPathDirectory</em>是一个标示需要获取目录的常数。<br>常用的有：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>NSDocumentDirectory</td>
+<td>Document/</td>
+</tr>
+<tr>
+<td>NSLibraryDirectory</td>
+<td>Library/</td>
+</tr>
+<tr>
+<td>NSCachesDirectory</td>
+<td>Library/Caches</td>
+</tr>
+<tr>
+<td>NSApplicationSupportDirectory</td>
+<td>Library/Application Support</td>
+</tr>
+</tbody></table>
+</div><div class="post-meta"><div class="post-meta__tags"></div><i class="icofont-tags"></i><a class="label default" href="/tags/file/">file</a></div></div><nav class="breadcrumb"><a class="extend prev" href="/2015/10/26/iOS/Persistence/plist/iOS_Persistence_plist/"><i class="icofont-double-left"> </i>Plist</a><a class="extend next" href="/2015/10/16/iOS/Cocoapods/git_delete_tag/">Github删除tag<i class="icofont-double-right"></i></a></nav></div><div id="search-container"><div class="padding" id="search-result"><div class="loading"><span> </span><span> </span><span> </span><span> </span><span> </span></div><div id="no-result"></div></div><label id="search-switcher" for="search-checkbox"><i class="icofont-close"></i></label></div></div><div class="col-12 col-md-3 static"><aside class="sidebar padding"><div class="local-search"><span class="sidebar-title">搜索</span><form class="form"><input class="search-input" type="search" name="" placeholder="search"></form></div></aside><aside class="sidebar padding toc-container"><span class="sidebar-title">TOC</span><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E8%A7%88"><span class="toc-number">1.</span> <span class="toc-text">概览</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%AF%E5%BE%84%E8%8E%B7%E5%8F%96"><span class="toc-number">2.</span> <span class="toc-text">路径获取</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Foundation%E5%87%BD%E6%95%B0"><span class="toc-number">2.1.</span> <span class="toc-text">Foundation函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#NSFileManager"><span class="toc-number">2.2.</span> <span class="toc-text">NSFileManager</span></a></li></ol></li></ol></aside><aside class="sidebar padding"><div class="categories"><a class="sidebar-title" href="/categories/">分类</a><ul class="tree"><li class="tree-item">
+                            <input id="cky4ddg4x000ngohta59x4kx7" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg4x000ngohta59x4kx7"></label>
+                            <a href="/categories/Android/">Android
+                            <span class="count">1</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Android/Graddle/">Graddle<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg4z000ugoht7wva974d" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg4z000ugoht7wva974d"></label>
+                            <a href="/categories/Front/">Front
+                            <span class="count">5</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg5y0044goht6bbz7cgl" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5y0044goht6bbz7cgl"></label>
+                            <a href="/categories/Front/CSS/">CSS
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg66004zgohth62w7tbb" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg66004zgohth62w7tbb"></label>
+                            <a href="/categories/Front/CSS/Cheatsheet/">Cheatsheet
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Front/CSS/Cheatsheet/Center/">Center<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Front/CSS/Cheatsheet/Triangle/">Triangle<span class="count">1</span></a>
+                </li></ul>
+                            </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/Front/Hexo/">Hexo<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Front/Webpack/">Webpack<span class="count">2</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg58001jgohtgcjo77pp" class="tree-checkbox" type="checkbox" aria-hidden="true" checked></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg58001jgohtgcjo77pp"></label>
+                            <a href="/categories/iOS/">iOS
+                            <span class="count">26</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Cocoapods/">Cocoapods<span class="count">2</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Draw/">Draw<span class="count">1</span></a>
+                </li><li class="tree-item">
+                            <input id="cky4ddg5w003ogoht4kn2g4st" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5w003ogoht4kn2g4st"></label>
+                            <a href="/categories/iOS/Objective-C/">Objective-C
+                            <span class="count">17</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg670055gohtfbx25yvn" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg670055gohtfbx25yvn"></label>
+                            <a href="/categories/iOS/Objective-C/Essentials/">Essentials
+                            <span class="count">10</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Essentials/Basic/">Basic<span class="count">6</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Essentials/NSObject/">NSObject<span class="count">4</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Runtime/">Runtime<span class="count">7</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg62004lgoht57b90zu8" class="tree-checkbox" type="checkbox" aria-hidden="true" checked></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg62004lgoht57b90zu8"></label>
+                            <a href="/categories/iOS/Persistence/">Persistence
+                            <span class="count">3</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Bundle/">Bundle<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Plist/">Plist<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Preferences/">Preferences<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg5x003xgohtaha32i59" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5x003xgohtaha32i59"></label>
+                            <a href="/categories/iOS/UIKit/">UIKit
+                            <span class="count">3</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/UIKit/Interface-Builder/">Interface Builder<span class="count">3</span></a>
+                </li></ul>
+                            </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg540019goht0qzabd7g" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg540019goht0qzabd7g"></label>
+                            <a href="/categories/Node-js/">Node-js
+                            <span class="count">4</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg62004jgohtgiygcr5x" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg62004jgohtgiygcr5x"></label>
+                            <a href="/categories/Node-js/JavaScript/">JavaScript
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Node-js/JavaScript/Essentials/">Essentials<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Node-js/JavaScript/Object/">Object<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/Node-js/npm/">npm<span class="count">2</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/NSLog/">NSLog<span class="count">3</span></a>
+                </li></ul></div><div class="tags"><a class="sidebar-title" href="/tags/">标签</a><ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Center-in-CSS/" rel="tag">Center in CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NODE-PATH/" rel="tag">NODE_PATH</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSObject/" rel="tag">NSObject</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Triangle-in-CSS/" rel="tag">Triangle in CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/class/" rel="tag">class</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocoapods/" rel="tag">cocoapods</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/compiler/" rel="tag">compiler</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/draw/" rel="tag">draw</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dyld/" rel="tag">dyld</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/file/" rel="tag">file</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graddle/" rel="tag">graddle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/metaclass/" rel="tag">metaclass</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object/" rel="tag">object</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prototype/" rel="tag">prototype</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/runtime/" rel="tag">runtime</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/self/" rel="tag">self</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storyboard/" rel="tag">storyboard</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/super/" rel="tag">super</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/this/" rel="tag">this</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a><span class="tag-list-count">2</span></li></ul></div><div class="links"><a class="sidebar-title" href="#">通道</a><ul class="link-list"><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://developer.apple.com/library">Apple Dev</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://stackoverflow.com/">StackOverflow</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://www.cocoawithlove.com/">CocoaWithLove</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://www.mikeash.com/">MikeAsh</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://nshipster.com/">NSHipster</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://www.objc.io/">Objc</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://copypastecharacter.com/all-characters">Web Unicode Characters</a></li></ul></div></aside></div></div></div><div class="grid"> <div class="row"> <div class="col-12 col-md-9"> <div class="footer"><div class="copyright"> <span>©</span><a href="/">Command+R.</a><span>Powered by</span><a class="label default" target="_blank" rel="noopener" href="https://hexo.io">Hexo.</a><span>Theme by</span><a class="label default" href="#">Locke. </a></div></div></div></div></div>
+<script src="/js/local-search.js"></script>
+</body></html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Zero's Blog | iOS学习日志"><meta name="keywords" content="Blog,Learn,Computer Science"><link rel="stylesheet" href="/css/hi.css"><link rel="stylesheet" href="/css/style.css"><title>Command+R</title><script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.hitlolo.com","root":"/","localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"path":"search.json"};
+  </script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="grid nav"><div class="row"><div class="col-12 col-md-3 col-md-offset-9"><div class="nav-meta"><a class="nav-meta__name" href="#">Command+R</a><p class="nav-meta__desc">Life doesn't have a ctrl-z. Type wisely.</p></div></div></div><div class="row"><input id="menu-checkbox" type="checkbox" aria-hidden="true"><label id="menu-switcher" role="button" for="menu-checkbox"> </label><div class="col-12 col-md-3 col-md-offset-9 nav-menu"><ol class="nav-menu__list"><li class="nav-menu__item"><a href="/"><i class="icofont-home"></i>主页</a></li><li class="nav-menu__item"><a href="/about/"><i class="icofont-beard"></i>关于</a></li></ol></div></div></div><div class="grid padding"> <div class="row"><div class="col-12 col-md-9">               <input id="search-checkbox" type="checkbox"><div class="post-container"><div class="post"><h1 class="post-title">Webpack的简单使用</h1><div class="post-meta"><span class="post-meta__date"><i class="icofont-calendar"></i>Oct 26, 2020</span><span class="post-meta__category"><a href="/categories/Front/"><i class="icofont-folder-open"></i>Front</a><a href="/categories/Front/Webpack/"><i class="icofont-folder-open"></i>Webpack</a></span></div><div class="post-content"><blockquote>
+<p>本质上，webpack 是一个现代 <em>JavaScript</em>应用程序的静态模块<em>打包器</em>(module bundler)。当 webpack 处理应用程序时，它会<em>递归地构建一个依赖关系图</em>(dependency graph)，其中包含应用程序需要的每个模块，然后将所有<em>这些模块打包成一个或多个 bundle</em>。</p>
+</blockquote>
+<p>阅读理解：javascript，打包器，递归构建依赖关系图，然后打包成bunlde。<br>简言之：javasript模块 =&gt; 递归处理 =&gt; bundle</p>
+<p>webpack有4个基本的东西，对照着这3个环节</p>
+<ul>
+<li>Entry<br>入口，javasript入口模块，即告诉webpack从哪一个javasript模块来作为递归构建其内部依赖图的开始 </li>
+<li>Output<br>出口，即这些javasript模块打包成的一个或多个bundle</li>
+<li>Loaders<br>在模块的递归处理中，webpack只处理javasript模块。那么非javasript模块呢，则交给loader，loader帮助webpack将其他非js文件转译成webpack可处理的模块</li>
+<li>Plugins<br>webpack只是一个打包器，负责打包的，其他一概不会。但是在递归处理过程中，所有存在依赖关系的模块都被load进了webpack中，这就相当于搭好了一个舞台。plugins就是这个时候登场的，plugins通过监听webpack提供的各种事件API来扩展功能，改变bundle的输出结果。例如minify压缩，chunk切割。</li>
+</ul>
+<h1 id="基础配置"><a href="#基础配置" class="headerlink" title="基础配置"></a>基础配置</h1><p>webpack 的基础配置文件，是导出一个对象的 JavaScript 文件<br>webpack的一般工作模式也就是在配置文件中，配置该对象的entry，output，loader，plugins，然后执行打包命令</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    mode: <span class="string">&#x27;development&#x27;</span>,</span><br><span class="line">    entry: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">    <span class="built_in">output</span>: &#123;</span><br><span class="line">        <span class="built_in">path</span>: <span class="built_in">path</span>.resolve(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">        filename: <span class="string">&#x27;[name].bundle.js&#x27;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight ada"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">webpack <span class="comment">--config [FILENAME.js]</span></span><br></pre></td></tr></table></figure>
+<p>如果配置文件使用的是webpack默认配置文件名<code>webpack.config.js</code>的话也可以直接使用webpack命令</p>
+<figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">webpack</span></span><br></pre></td></tr></table></figure>
+<p>通常，我们会有针对不同环境进行区别配置的需求。例如，开发环境时需要配置开发服务器，生成环境时则需要文件压缩。这时候可以选择导出为一个函数，函数中会带入环境信息，和命令行参数信息，方便我们通过env区分环境，或者通过options区分打包的命令参数：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span><span class="params">(env, options)</span></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    entry: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">    <span class="built_in">output</span>: &#123;</span><br><span class="line">        <span class="built_in">path</span>: <span class="built_in">path</span>.resolve(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">        filename: <span class="string">&#x27;[name].bundle.js&#x27;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="entry"><a href="#entry" class="headerlink" title="entry"></a>entry</h1><p>入口即一次递归处理的起点模块。</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.<span class="built_in">exports</span> = &#123;</span><br><span class="line">    entry: <span class="string">&#x27;./src/index.js&#x27;</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>是下面的简写：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span>.<span class="keyword">exports</span> = &#123;</span><br><span class="line">    entry: &#123;</span><br><span class="line">        <span class="comment">//入口名: 模块路径</span></span><br><span class="line">        main:<span class="string">&#x27;./src/index.js&#x27;</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>入口可以是一个或多个，通常是：每个 HTML 页面都有一个入口起点。单页应用(SPA)：一个入口起点，多页应用(MPA)：多个入口起点。</p>
+<h1 id="output"><a href="#output" class="headerlink" title="output"></a>output</h1><p>出口即webpack打包的bundle输出。</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">module</span>.exports = &#123;</span><br><span class="line">    <span class="built_in">output</span>: &#123;</span><br><span class="line">        <span class="built_in">path</span>: <span class="built_in">path</span>.resolve(__dirname, <span class="string">&#x27;dist&#x27;</span>),</span><br><span class="line">        filename: <span class="string">&#x27;[name].bundle.js&#x27;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们一般会使用webpack提供的占位符来指示output的文件名，以保证输出文件的唯一性。</p>
+<h1 id="Loader"><a href="#Loader" class="headerlink" title="Loader"></a>Loader</h1><p>webpack只处理javasript。<br>但是我们在代码中会引入比如pug，less，vue等文件，webpack就不认识了；loader拓展了webpack处理多种文件类型的能力，将这些文件转换成浏览器能够渲染的js、css。<br>module.rules允许我们配置模块的匹配规则。</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attribute">module</span>: &#123;</span><br><span class="line">        rules: [</span><br><span class="line">            &#123;</span><br><span class="line">                test: /\.js$/,</span><br><span class="line">                use: &#123;</span><br><span class="line">                    loader: <span class="string">&#x27;babel-loader&#x27;</span>,</span><br><span class="line">                    options: &#123;&#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;,</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="attribute">test</span>: /\.css$/,</span><br><span class="line">                use: [</span><br><span class="line">                    &#123; loader: <span class="string">&#x27;style-loader&#x27;</span> &#125;,</span><br><span class="line">                    &#123; <span class="attribute">loader</span>: <span class="string">&#x27;css-loader&#x27;</span> &#125;</span><br><span class="line">                ]</span><br><span class="line">            &#125;,</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>test是一个正则表达式，匹配不同的文件类型；<br>use表示匹配了这个文件后调用什么loader来处理，当有多个loader的时候，use就需要用到数组。<br>多个loader支持链式传递，能够对资源进行流水线处理，上一个loader处理的结果传递给下一个loader继续处理；采用编写时从右到左，从下到上的优先级顺序；在上面配置代码中对css的处理就遵从了这个优先级，css-loader先处理，处理好了再给style-loader；因此我们写loader的时候也要注意前后顺序。</p>
+<p>常用的loader及文档可见<a target="_blank" rel="noopener" href="https://webpack.js.org/loaders/">webpack官网</a>。</p>
+<h1 id="Plugins"><a href="#Plugins" class="headerlink" title="Plugins"></a>Plugins</h1><p>插件，扩展webpack的功能。</p>
+<p>通常每一个plugin都有一个自己的配置文档。使用也很简单，例如<code>clean-webpack-plugin</code>插件<br>安装，</p>
+<figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">npm</span> i -D clean-webpack-plugin</span><br></pre></td></tr></table></figure>
+<p>然后在plugins属性中配置，</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; CleanWebpackPlugin &#125; = <span class="built_in">require</span>(<span class="string">&#x27;clean-webpack-plugin&#x27;</span>);</span><br><span class="line"><span class="built_in">module</span>.<span class="built_in">exports</span> = &#123;</span><br><span class="line">    plugins: [</span><br><span class="line">        <span class="keyword">new</span> CleanWebpackPlugin(),</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>常用的有<br><code>html-webpack-plugin</code>用于生成html页面；<br><code>clean-webpack-plugin</code>用于在打包前清理上一次项目生成的bundle文件，它会根据output.path自动清理文件夹；<br><code>webpack-bundle-analyzer</code>用于生成 bundle 的模块组成图，显示所占体积;</p>
+<p>常用的Plugins及文档可见<a target="_blank" rel="noopener" href="https://webpack.js.org/plugins/">webpack官网</a>。</p>
+<p>这里是对webpack4个配置概念的最基础认识。更多的认识还有待实践和学习。</p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/147787134">Webpack配置全解析（基础篇）</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/176840425">Webpack配置全解析（优化篇）</a><br><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844904094281236487#heading-2">再来一打Webpack面试题</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/30669007">Webpack HMR 原理解析</a></p>
+</div><div class="post-meta"><div class="post-meta__tags"></div><i class="icofont-tags"></i><a class="label default" href="/tags/webpack/">webpack</a></div></div><nav class="breadcrumb"><a class="extend prev" href="/2020/11/03/Front/Webpack/%E4%BB%8E0%E6%90%AD%E5%BB%BA%E4%BC%A0%E7%BB%9F%E5%A4%9A%E9%A1%B5%E9%9D%A2%E5%B7%A5%E7%A8%8B/"><i class="icofont-double-left"> </i>Webpack传统多页面应用</a><a class="extend next" href="/2020/10/26/Front/Hexo/hexo%E5%B0%8F%E5%9D%91/">Hexo填坑小记<i class="icofont-double-right"></i></a></nav></div><div id="search-container"><div class="padding" id="search-result"><div class="loading"><span> </span><span> </span><span> </span><span> </span><span> </span></div><div id="no-result"></div></div><label id="search-switcher" for="search-checkbox"><i class="icofont-close"></i></label></div></div><div class="col-12 col-md-3 static"><aside class="sidebar padding"><div class="local-search"><span class="sidebar-title">搜索</span><form class="form"><input class="search-input" type="search" name="" placeholder="search"></form></div></aside><aside class="sidebar padding toc-container"><span class="sidebar-title">TOC</span><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE"><span class="toc-number">1.</span> <span class="toc-text">基础配置</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#entry"><span class="toc-number">2.</span> <span class="toc-text">entry</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#output"><span class="toc-number">3.</span> <span class="toc-text">output</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Loader"><span class="toc-number">4.</span> <span class="toc-text">Loader</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Plugins"><span class="toc-number">5.</span> <span class="toc-text">Plugins</span></a></li></ol></aside><aside class="sidebar padding"><div class="categories"><a class="sidebar-title" href="/categories/">分类</a><ul class="tree"><li class="tree-item">
+                            <input id="cky4ddg4x000ngohta59x4kx7" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg4x000ngohta59x4kx7"></label>
+                            <a href="/categories/Android/">Android
+                            <span class="count">1</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Android/Graddle/">Graddle<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg4z000ugoht7wva974d" class="tree-checkbox" type="checkbox" aria-hidden="true" checked></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg4z000ugoht7wva974d"></label>
+                            <a href="/categories/Front/">Front
+                            <span class="count">5</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg5y0044goht6bbz7cgl" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5y0044goht6bbz7cgl"></label>
+                            <a href="/categories/Front/CSS/">CSS
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg66004zgohth62w7tbb" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg66004zgohth62w7tbb"></label>
+                            <a href="/categories/Front/CSS/Cheatsheet/">Cheatsheet
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Front/CSS/Cheatsheet/Center/">Center<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Front/CSS/Cheatsheet/Triangle/">Triangle<span class="count">1</span></a>
+                </li></ul>
+                            </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/Front/Hexo/">Hexo<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Front/Webpack/">Webpack<span class="count">2</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg58001jgohtgcjo77pp" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg58001jgohtgcjo77pp"></label>
+                            <a href="/categories/iOS/">iOS
+                            <span class="count">26</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Cocoapods/">Cocoapods<span class="count">2</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Draw/">Draw<span class="count">1</span></a>
+                </li><li class="tree-item">
+                            <input id="cky4ddg5w003ogoht4kn2g4st" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5w003ogoht4kn2g4st"></label>
+                            <a href="/categories/iOS/Objective-C/">Objective-C
+                            <span class="count">17</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg670055gohtfbx25yvn" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg670055gohtfbx25yvn"></label>
+                            <a href="/categories/iOS/Objective-C/Essentials/">Essentials
+                            <span class="count">10</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Essentials/Basic/">Basic<span class="count">6</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Essentials/NSObject/">NSObject<span class="count">4</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Runtime/">Runtime<span class="count">7</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg62004lgoht57b90zu8" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg62004lgoht57b90zu8"></label>
+                            <a href="/categories/iOS/Persistence/">Persistence
+                            <span class="count">3</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Bundle/">Bundle<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Plist/">Plist<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Preferences/">Preferences<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg5x003xgohtaha32i59" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5x003xgohtaha32i59"></label>
+                            <a href="/categories/iOS/UIKit/">UIKit
+                            <span class="count">3</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/UIKit/Interface-Builder/">Interface Builder<span class="count">3</span></a>
+                </li></ul>
+                            </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg540019goht0qzabd7g" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg540019goht0qzabd7g"></label>
+                            <a href="/categories/Node-js/">Node-js
+                            <span class="count">4</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg62004jgohtgiygcr5x" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg62004jgohtgiygcr5x"></label>
+                            <a href="/categories/Node-js/JavaScript/">JavaScript
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Node-js/JavaScript/Essentials/">Essentials<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Node-js/JavaScript/Object/">Object<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/Node-js/npm/">npm<span class="count">2</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/NSLog/">NSLog<span class="count">3</span></a>
+                </li></ul></div><div class="tags"><a class="sidebar-title" href="/tags/">标签</a><ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Center-in-CSS/" rel="tag">Center in CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NODE-PATH/" rel="tag">NODE_PATH</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSObject/" rel="tag">NSObject</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Triangle-in-CSS/" rel="tag">Triangle in CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/class/" rel="tag">class</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocoapods/" rel="tag">cocoapods</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/compiler/" rel="tag">compiler</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/draw/" rel="tag">draw</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dyld/" rel="tag">dyld</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/file/" rel="tag">file</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graddle/" rel="tag">graddle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/metaclass/" rel="tag">metaclass</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object/" rel="tag">object</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prototype/" rel="tag">prototype</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/runtime/" rel="tag">runtime</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/self/" rel="tag">self</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storyboard/" rel="tag">storyboard</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/super/" rel="tag">super</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/this/" rel="tag">this</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a><span class="tag-list-count">2</span></li></ul></div><div class="links"><a class="sidebar-title" href="#">通道</a><ul class="link-list"><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://developer.apple.com/library">Apple Dev</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://stackoverflow.com/">StackOverflow</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://www.cocoawithlove.com/">CocoaWithLove</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://www.mikeash.com/">MikeAsh</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://nshipster.com/">NSHipster</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://www.objc.io/">Objc</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://copypastecharacter.com/all-characters">Web Unicode Characters</a></li></ul></div></aside></div></div></div><div class="grid"> <div class="row"> <div class="col-12 col-md-9"> <div class="footer"><div class="copyright"> <span>©</span><a href="/">Command+R.</a><span>Powered by</span><a class="label default" target="_blank" rel="noopener" href="https://hexo.io">Hexo.</a><span>Theme by</span><a class="label default" href="#">Locke. </a></div></div></div></div></div>
+<script src="/js/local-search.js"></script>
+</body></html>

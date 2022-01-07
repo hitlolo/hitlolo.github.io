@@ -1,0 +1,134 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Zero's Blog | iOS学习日志"><meta name="keywords" content="Blog,Learn,Computer Science"><link rel="stylesheet" href="/css/hi.css"><link rel="stylesheet" href="/css/style.css"><title>Command+R</title><script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.hitlolo.com","root":"/","localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"path":"search.json"};
+  </script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="grid nav"><div class="row"><div class="col-12 col-md-3 col-md-offset-9"><div class="nav-meta"><a class="nav-meta__name" href="#">Command+R</a><p class="nav-meta__desc">Life doesn't have a ctrl-z. Type wisely.</p></div></div></div><div class="row"><input id="menu-checkbox" type="checkbox" aria-hidden="true"><label id="menu-switcher" role="button" for="menu-checkbox"> </label><div class="col-12 col-md-3 col-md-offset-9 nav-menu"><ol class="nav-menu__list"><li class="nav-menu__item"><a href="/"><i class="icofont-home"></i>主页</a></li><li class="nav-menu__item"><a href="/about/"><i class="icofont-beard"></i>关于</a></li></ol></div></div></div><div class="grid padding"> <div class="row"><div class="col-12 col-md-9">               <input id="search-checkbox" type="checkbox"><div class="post-container"><div class="post"><h1 class="post-title">the big idea——关于面向对象</h1><div class="post-meta"><span class="post-meta__date"><i class="icofont-calendar"></i>May 14, 2015</span><span class="post-meta__category"><a href="/categories/NSLog/"><i class="icofont-folder-open"></i>NSLog</a></span></div><div class="post-content"><p>编程语言就两种，一种没人用，一种被人骂。<br>在所有社区，论坛，讨论群里，几乎每天都可以看到一些程序员关于XX是最好语言的互喷和自喷<br>为什么大家会边码边骂<br>其他人我不知道，就我自己而言：我觉得多半都起源于码代码的思路的和语言本身的思想不吻合<br>当想实现某功能时，每个程序员脑袋中都有一条思路，或基于知识或基于常识<br>最理想的状况是我们思路中的逻辑和模型都能非常想当然地用语言的特性表达出来，如同生活中说话聊天那么自然<br>然而通常情况下，这一切都是想当然<br>敲出来的代码受限于所使用的语言的特性，也许在我们脑海中一个简单的东西，在某编程语言的特性下需要我们绕很多弯才能达到我们想要的结果<br>而这个实现的过程，因为这些受限于语言的十八弯，给大脑徒增了很多多余的思考<br>这些思考是多余的是因为 它们只是为了填补编程语言和我们的思路中的鸿沟<br>并不是直接解决我们的问题<br>当这种多余的问题在码代码的过程中出现的很多时，边码边喷也很说得过去</p>
+<p>这个问题可能也是无法解决的 只能妥协<br>妥协就是thinking in XX。理解所使用的语言，以它的视角去思考。<br>thinking in C++<br>thinking in Java<br>大概也就是这个意思</p>
+<p>编程语言从面向过程，到面向对象<br>目的当然就是语言的自然化<br>改变的也正是思考的角度<br>想想似乎也很简单<br>“对象”更直接了当地抽象现实生活中的“模型” 更符合思考方式</p>
+<p>学习计算机的时候，每个老师都会强调“面向对象”<br>对象是什么balabala<br>面向对象3要素balabala</p>
+<p>关于什么是“对象” 每个人都有自己的理解<br>前几天我在网上搜关于HTTP的东西，却意外看到一些关于对象的资料，颇为耳目一新，来自Alan kay(面向对象之父)。<br>那么Alan kay概念里的对象是什么呢？用他自己的话来说：</p>
+<blockquote>
+<p>I thought of objects being like biological cells and/or individual computers on a network, only able to communicate with messages (so messaging came at the very beginning -- it took a while to see how to do messaging in a programming language efficiently enough to be useful).</p>
+</blockquote>
+<hr>
+<blockquote>
+<p>OOP to me means only messaging, local retention and protection and hiding of state-process, and extreme late-binding of all things.</p>
+</blockquote>
+<p>Alan Kay不止一次强调“对象”只是个lesser idea，真正的big idea在于“消息”<br>消息即对象之间的信息传递。</p>
+<blockquote>
+<p>I’m sorry that I long ago coined the term “objects” for this topic because it gets many people to focus on the lesser idea. The big idea is “messaging” – that is what the kernal of Smalltalk/Squeak is all about ...   </p>
+</blockquote>
+<blockquote>
+<p>The key in making great and growable systems is much more to design how its modules communicate rather than what their internal properties and behaviors should be.</p>
+</blockquote>
+<p>他强调对于可增量的系统而言对象之间信息传递的意义远胜于对象内部的属性如何行为怎样。<br>而我们课堂上所学的却正是：如何定义类，类的属性，类的方法这些less idea。</p>
+<p>消息，消息传递，在加上他之间对对象的举例：<code>I thought of objects being like biological cells and/or individual computers on a network, only able to communicate with messages</code>看到这些，会想到什么呢<br>反正我想到了网络。可能也正因为我是查HTTP才看到这些东西的吧。<br>而事实是，Alan Kay，面向对象之父，SmallTalk(公认的最早的面向对象的语言)的发明人，自己心中真正的面向对象的系统也正是互联网。</p>
+<blockquote><p>To me, one of the nice things about the semantics of real objects is that they are “real computers all the way down (RCATWD)” – this always retains the full ability to represent anything. The old way quickly gets to two things that aren’t computers – data and procedures – and all of a sudden the ability to defer optimizations and particular decisions in favour of behaviours has been lost.<br><br><br>In other words, always having real objects always retains the ability to simulate anything you want, and to send it around the planet. If you send data 1000 miles you have to send a manual and/or a programmer to make use of it. If you send the needed programs that can deal with the data, then you are sending an object (even if the design is poor).<br><br><br>And RCATWD also provides perfect protection in both directions.<em>We can see this in the hardware model of the Internet (possibly the only real object-oriented system in working order).</em><br><br><br>You get language extensibility almost for free by simply agreeing on conventions for the message forms.<br>My thought in the 70s was that the Internet we were all working on alongside personal computing was a really good scalable design, and that we should make a virtual internet of virtual machines that could be cached by the hardware machines. It’s really too bad that this didn’t happen.<br><br><br> If ‘real objects’ are RCATWD, then each object could be implemented using the programming language most appropriate for its intrinsic nature, which would give new meaning to the phrase ‘polyglot programming.’</p><footer><strong>A to Z of programming languages: Smalltalk-80</strong><cite><a target="_blank" rel="noopener" href="http://www.computerworld.com.au/article/352182/z_programming_languages_smalltalk-80/?">We talk to Alan Kay, co-inventor of the Smalltalk family of languages, and a hero of personal computing in many respects</a></cite></footer></blockquote>
+
+<p><em>a Web service is like an object</em><br>这些“object”之间的交流依仗的正是the big idea--message<br>网络协议栈（tcp/ip）定义了这些“object”的消息传递方式，而可靠的消息传递是一切网络奇迹的基础<br>这就是the big idea，object皆有不同但是只要有互相可认知的消息传递，其他一切都好商量<br>这就好像人类，语言是基本的信息传递方式，有了语言，有了沟通，那么一切皆有可能</p>
+<p>粗略的类比一下，看看为什么*a Web service is like an object *<br>Objective-C中的消息传递是这样：<br><code>[Jack saySomething:@&quot;hello&quot;];</code><br>向对象jack发送消息saySomething，参数是@“hello”，<br>改成URL的格式可能是这样：<br><code>www.xxx.com/jack/saySomething?say=hello</code><br>发送消息的结果都是得到某响应（获取到返回的数据）<br>不同的是前者对象在内存中某地址处，后者在网络的某主机上</p>
+<p>这么看起来，现在的web service就有点像思想先锋们十几年前关于面向对象的设想，不同的地方，但是因为一致的消息机制（messaging，api），实现不同功能的对象（service）之间相互发送消息，相互转发，以协作完成工作。</p>
+</div><div class="post-meta"><div class="post-meta__tags"></div><i class="icofont-tags"></i><a class="label default" href="/tags/object/">object</a></div></div><nav class="breadcrumb"><a class="extend prev" href="/2015/06/01/iOS/Objective-C/essentials/NSObject/Something%20i%20should%20know%20about-NSObject/"><i class="icofont-double-left"> </i>->[ NSObject ]</a><a class="extend next" href="/2015/05/01/NSLog/Fall%20Forward/">丹泽尔·华盛顿：Fall Forward<i class="icofont-double-right"></i></a></nav></div><div id="search-container"><div class="padding" id="search-result"><div class="loading"><span> </span><span> </span><span> </span><span> </span><span> </span></div><div id="no-result"></div></div><label id="search-switcher" for="search-checkbox"><i class="icofont-close"></i></label></div></div><div class="col-12 col-md-3 static"><aside class="sidebar padding"><div class="local-search"><span class="sidebar-title">搜索</span><form class="form"><input class="search-input" type="search" name="" placeholder="search"></form></div></aside><aside class="sidebar padding"><div class="categories"><a class="sidebar-title" href="/categories/">分类</a><ul class="tree"><li class="tree-item">
+                            <input id="cky4ddg4x000ngohta59x4kx7" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg4x000ngohta59x4kx7"></label>
+                            <a href="/categories/Android/">Android
+                            <span class="count">1</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Android/Graddle/">Graddle<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg4z000ugoht7wva974d" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg4z000ugoht7wva974d"></label>
+                            <a href="/categories/Front/">Front
+                            <span class="count">5</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg5y0044goht6bbz7cgl" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5y0044goht6bbz7cgl"></label>
+                            <a href="/categories/Front/CSS/">CSS
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg66004zgohth62w7tbb" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg66004zgohth62w7tbb"></label>
+                            <a href="/categories/Front/CSS/Cheatsheet/">Cheatsheet
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Front/CSS/Cheatsheet/Center/">Center<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Front/CSS/Cheatsheet/Triangle/">Triangle<span class="count">1</span></a>
+                </li></ul>
+                            </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/Front/Hexo/">Hexo<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Front/Webpack/">Webpack<span class="count">2</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg58001jgohtgcjo77pp" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg58001jgohtgcjo77pp"></label>
+                            <a href="/categories/iOS/">iOS
+                            <span class="count">26</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Cocoapods/">Cocoapods<span class="count">2</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Draw/">Draw<span class="count">1</span></a>
+                </li><li class="tree-item">
+                            <input id="cky4ddg5w003ogoht4kn2g4st" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5w003ogoht4kn2g4st"></label>
+                            <a href="/categories/iOS/Objective-C/">Objective-C
+                            <span class="count">17</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg670055gohtfbx25yvn" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg670055gohtfbx25yvn"></label>
+                            <a href="/categories/iOS/Objective-C/Essentials/">Essentials
+                            <span class="count">10</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Essentials/Basic/">Basic<span class="count">6</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Essentials/NSObject/">NSObject<span class="count">4</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Runtime/">Runtime<span class="count">7</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg62004lgoht57b90zu8" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg62004lgoht57b90zu8"></label>
+                            <a href="/categories/iOS/Persistence/">Persistence
+                            <span class="count">3</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Bundle/">Bundle<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Plist/">Plist<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Preferences/">Preferences<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg5x003xgohtaha32i59" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5x003xgohtaha32i59"></label>
+                            <a href="/categories/iOS/UIKit/">UIKit
+                            <span class="count">3</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/UIKit/Interface-Builder/">Interface Builder<span class="count">3</span></a>
+                </li></ul>
+                            </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg540019goht0qzabd7g" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg540019goht0qzabd7g"></label>
+                            <a href="/categories/Node-js/">Node-js
+                            <span class="count">4</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg62004jgohtgiygcr5x" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg62004jgohtgiygcr5x"></label>
+                            <a href="/categories/Node-js/JavaScript/">JavaScript
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Node-js/JavaScript/Essentials/">Essentials<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Node-js/JavaScript/Object/">Object<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/Node-js/npm/">npm<span class="count">2</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/NSLog/">NSLog<span class="count">3</span></a>
+                </li></ul></div><div class="tags"><a class="sidebar-title" href="/tags/">标签</a><ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Center-in-CSS/" rel="tag">Center in CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NODE-PATH/" rel="tag">NODE_PATH</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSObject/" rel="tag">NSObject</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Triangle-in-CSS/" rel="tag">Triangle in CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/class/" rel="tag">class</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocoapods/" rel="tag">cocoapods</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/compiler/" rel="tag">compiler</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/draw/" rel="tag">draw</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dyld/" rel="tag">dyld</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/file/" rel="tag">file</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graddle/" rel="tag">graddle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/metaclass/" rel="tag">metaclass</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object/" rel="tag">object</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prototype/" rel="tag">prototype</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/runtime/" rel="tag">runtime</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/self/" rel="tag">self</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storyboard/" rel="tag">storyboard</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/super/" rel="tag">super</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/this/" rel="tag">this</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a><span class="tag-list-count">2</span></li></ul></div><div class="links"><a class="sidebar-title" href="#">通道</a><ul class="link-list"><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://developer.apple.com/library">Apple Dev</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://stackoverflow.com/">StackOverflow</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://www.cocoawithlove.com/">CocoaWithLove</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://www.mikeash.com/">MikeAsh</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://nshipster.com/">NSHipster</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://www.objc.io/">Objc</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://copypastecharacter.com/all-characters">Web Unicode Characters</a></li></ul></div></aside></div></div></div><div class="grid"> <div class="row"> <div class="col-12 col-md-9"> <div class="footer"><div class="copyright"> <span>©</span><a href="/">Command+R.</a><span>Powered by</span><a class="label default" target="_blank" rel="noopener" href="https://hexo.io">Hexo.</a><span>Theme by</span><a class="label default" href="#">Locke. </a></div></div></div></div></div>
+<script src="/js/local-search.js"></script>
+</body></html>

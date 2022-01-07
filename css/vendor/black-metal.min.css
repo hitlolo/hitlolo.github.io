@@ -1,0 +1,7 @@
+/*!
+  Theme: Black Metal
+  Author: metalelf0 (https://github.com/metalelf0)
+  License: ~ MIT (or more permissive) [via base16-schemes-source]
+  Maintainer: @highlightjs/core-team
+  Version: 2021.05.0
+*/pre code{display:block;overflow-x:auto;padding:1em}code{padding:3px 5px} .comment{color:#333}.tag{color:#999}.operator,.punctuation,.subst{color:#c1c1c1}.operator{opacity:.7}.bullet,.deletion,.name,.selector-tag,.template-variable,.variable{color:#5f8787}.attr,.link,.literal,.number,.symbol,.variable.constant_{color:#aaa}.class .title,.title,.title.class_{color:#a06666}.strong{font-weight:700;color:#a06666}.addition,.code,.string,.title.class_.inherited__{color:#d99}.built_in,.doctag,.keyword.atrule,.quote,.regexp{color:#aaa}.attribute,.function .title,.section,.title.function_,.ruby .property{color:#888}.diff .meta,.keyword,.template-tag,.type{color:#999}.emphasis{color:#999;font-style:italic}.meta,.meta .keyword,.meta .string{color:#444}.meta .keyword,.meta-keyword{font-weight:700}

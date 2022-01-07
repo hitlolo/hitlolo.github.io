@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="description" content="Zero's Blog | iOS学习日志"><meta name="keywords" content="Blog,Learn,Computer Science"><link rel="stylesheet" href="/css/hi.css"><link rel="stylesheet" href="/css/style.css"><title>Command+R</title><script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.hitlolo.com","root":"/","localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"path":"search.json"};
+  </script><meta name="generator" content="Hexo 5.4.0"></head><body><div class="grid nav"><div class="row"><div class="col-12 col-md-3 col-md-offset-9"><div class="nav-meta"><a class="nav-meta__name" href="#">Command+R</a><p class="nav-meta__desc">Life doesn't have a ctrl-z. Type wisely.</p></div></div></div><div class="row"><input id="menu-checkbox" type="checkbox" aria-hidden="true"><label id="menu-switcher" role="button" for="menu-checkbox"> </label><div class="col-12 col-md-3 col-md-offset-9 nav-menu"><ol class="nav-menu__list"><li class="nav-menu__item"><a href="/"><i class="icofont-home"></i>主页</a></li><li class="nav-menu__item"><a href="/about/"><i class="icofont-beard"></i>关于</a></li></ol></div></div></div><div class="grid padding"> <div class="row"><div class="col-12 col-md-9">               <input id="search-checkbox" type="checkbox"><div class="post-container"><div class="post"><h1 class="post-title">Plist</h1><div class="post-meta"><span class="post-meta__date"><i class="icofont-calendar"></i>Oct 26, 2015</span><span class="post-meta__category"><a href="/categories/iOS/"><i class="icofont-folder-open"></i>iOS</a><a href="/categories/iOS/Persistence/"><i class="icofont-folder-open"></i>Persistence</a><a href="/categories/iOS/Persistence/Plist/"><i class="icofont-folder-open"></i>Plist</a></span></div><div class="post-content"><h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>plist是比较简单的结构化持久化方案。</p>
+<p>所能表达的基本类型包括：</p>
+<table>
+<thead>
+<tr>
+<th>Abstract type</th>
+<th>XML element</th>
+<th>Cocoa class</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>array</td>
+<td>&lt;array&gt;</td>
+<td>NSArray</td>
+</tr>
+<tr>
+<td>dictionary</td>
+<td>&lt;dict&gt;</td>
+<td>NSDictionary</td>
+</tr>
+<tr>
+<td>string</td>
+<td>&lt;string&gt;</td>
+<td>NSString</td>
+</tr>
+<tr>
+<td>data</td>
+<td>&lt;data&gt;</td>
+<td>NSData</td>
+</tr>
+<tr>
+<td>date</td>
+<td>&lt;date&gt;</td>
+<td>NSDate</td>
+</tr>
+<tr>
+<td>number - integer</td>
+<td>&lt;integer&gt;</td>
+<td>NSNumber (intValue)</td>
+</tr>
+<tr>
+<td>number - floating point</td>
+<td>&lt;real&gt;</td>
+<td>NSNumber (floatValue)</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>&lt;true/&gt; or &lt;false/&gt;</td>
+<td>NSNumber (boolValue == YES or boolValue == NO)</td>
+</tr>
+</tbody></table>
+<p>除以上类型之外的一些复制对象可以通过遵从NSCoding协议,利用NSKeyedArchiver转化为NSData类型来表达。<br>例如：UIColor对象：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//to data</span></span><br><span class="line"><span class="built_in">NSData</span> *theData = [<span class="built_in">NSKeyedArchiver</span> archivedDataWithRootObject:aColor];</span><br><span class="line"></span><br><span class="line"><span class="comment">//to uicolor</span></span><br><span class="line"><span class="built_in">UIColor</span>* aColor = (<span class="built_in">UIColor</span>*)[<span class="built_in">NSKeyedUnarchiver</span> unarchiveObjectWithData:theData] ;  </span><br></pre></td></tr></table></figure>
+
+<h2 id="存储格式"><a href="#存储格式" class="headerlink" title="存储格式"></a>存储格式</h2><p>plist有三种静态存储格式。</p>
+<ul>
+<li>XML</li>
+<li>Binary</li>
+<li>ASCII format</li>
+</ul>
+<p>其中XML具有更佳的可读性和移植性，binary的空间要求最低，ASCII仅可读。<br>平时使用中，一般为了可读性和方便编辑就使用XML格式。<br>为了速度和空间就使用binary格式。ASCII很少使用。<br>所以大家普遍认为的plist就是XML是不正确的。</p>
+<h2 id="利用NSPropertyListSerialization进行plist读写"><a href="#利用NSPropertyListSerialization进行plist读写" class="headerlink" title="利用NSPropertyListSerialization进行plist读写"></a>利用NSPropertyListSerialization进行plist读写</h2><p>NSPropertyListSerialization类可以方便地序列化和反序列化plist对象。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//序列化</span></span><br><span class="line">+ (<span class="built_in">NSData</span> *)dataWithPropertyList:(<span class="keyword">id</span>)plist </span><br><span class="line">                          format:(<span class="built_in">NSPropertyListFormat</span>)format </span><br><span class="line">                         options:(<span class="built_in">NSPropertyListWriteOptions</span>)opt </span><br><span class="line">                           error:(<span class="keyword">out</span> <span class="built_in">NSError</span> * _Nullable *)error;</span><br><span class="line">                           </span><br><span class="line"><span class="comment">//反序列化</span></span><br><span class="line">+ (<span class="keyword">id</span>)propertyListWithData:(<span class="built_in">NSData</span> *)data </span><br><span class="line">                   options:(<span class="built_in">NSPropertyListReadOptions</span>)opt </span><br><span class="line">                    format:(<span class="built_in">NSPropertyListFormat</span> *)format </span><br><span class="line">                     error:(<span class="keyword">out</span> <span class="built_in">NSError</span> * _Nullable *)error;</span><br></pre></td></tr></table></figure>
+
+<p>其中：<br>序列化时：NSPropertyListFormat参数可以指定序列化所使用的存储格式，如：XML,binary，ASCII。<br>反序列化时：NSPropertyListReadOptions参数可以控制反序列化之后的plist对象的mutability。</p>
+<h3 id="plist写"><a href="#plist写" class="headerlink" title="plist写"></a>plist写</h3><ol>
+<li>将plist对象序列化为NSData对象</li>
+<li>利用NSData对象进行文件写入</li>
+</ol>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.获取路径</span></span><br><span class="line"><span class="built_in">NSString</span> *path = [[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@&quot;Data&quot;</span> ofType:<span class="string">@&quot;plist&quot;</span>];</span><br><span class="line"><span class="built_in">NSString</span> *error;</span><br><span class="line"><span class="comment">//2.序列化</span></span><br><span class="line"><span class="built_in">NSData</span> *xmlData; = [<span class="built_in">NSPropertyListSerialization</span> dataFromPropertyList:plist</span><br><span class="line">                                       format:<span class="built_in">NSPropertyListXMLFormat_v1_0</span></span><br><span class="line">                                       errorDescription:&amp;error];</span><br><span class="line"><span class="comment">//3.写文件</span></span><br><span class="line"><span class="keyword">if</span>(xmlData) &#123;</span><br><span class="line">    <span class="built_in">NSLog</span>(<span class="string">@&quot;No error creating XML data.&quot;</span>);</span><br><span class="line">    [xmlData writeToFile:path atomically:<span class="literal">YES</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="plist读"><a href="#plist读" class="headerlink" title="plist读"></a>plist读</h3><ol>
+<li>利用NSData进行文件读</li>
+<li>将NSData反序列化为plist对象</li>
+</ol>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//1.获取路径</span></span><br><span class="line"><span class="built_in">NSString</span> *path = [[<span class="built_in">NSBundle</span> mainBundle] pathForResource:<span class="string">@&quot;Data&quot;</span> ofType:<span class="string">@&quot;plist&quot;</span>];</span><br><span class="line"><span class="comment">//2.读文件</span></span><br><span class="line"><span class="built_in">NSData</span> *plistData = [<span class="built_in">NSData</span> dataWithContentsOfFile:path];</span><br><span class="line"><span class="built_in">NSString</span> *error;</span><br><span class="line"><span class="built_in">NSPropertyListFormat</span> format;</span><br><span class="line"><span class="comment">//3.反序列化</span></span><br><span class="line"><span class="keyword">id</span> plist; = [<span class="built_in">NSPropertyListSerialization</span> propertyListFromData:plistData</span><br><span class="line">                                mutabilityOption:<span class="built_in">NSPropertyListImmutable</span></span><br><span class="line">                                format:&amp;format</span><br><span class="line">                                errorDescription:&amp;error];</span><br><span class="line">                                </span><br></pre></td></tr></table></figure>
+
+<h2 id="利用NSDictionary，NSArray进行plist读写"><a href="#利用NSDictionary，NSArray进行plist读写" class="headerlink" title="利用NSDictionary，NSArray进行plist读写"></a>利用NSDictionary，NSArray进行plist读写</h2><p>NSDictionary，NSArray都有专为Plist设计的类方法和实例方法。</p>
+<p>以NSDictionary为例：</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//读</span></span><br><span class="line">+ (<span class="built_in">NSDictionary</span>&lt;KeyType,ObjectType&gt; *)dictionaryWithContentsOfFile:(<span class="built_in">NSString</span> *)path;</span><br><span class="line">+ (<span class="built_in">NSDictionary</span>&lt;KeyType,ObjectType&gt; *)dictionaryWithContentsOfURL:(<span class="built_in">NSURL</span> *)url;</span><br><span class="line"></span><br><span class="line"><span class="comment">//写</span></span><br><span class="line">- (<span class="built_in">BOOL</span>)writeToFile:(<span class="built_in">NSString</span> *)path </span><br><span class="line">         atomically:(<span class="built_in">BOOL</span>)useAuxiliaryFile;</span><br><span class="line">- (<span class="built_in">BOOL</span>)writeToURL:(<span class="built_in">NSURL</span> *)url </span><br><span class="line">        atomically:(<span class="built_in">BOOL</span>)atomically;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li><p>读方法，将从文件中序列化plist对象，但是所生产的plist对象都为immutable，如果需要对mutability进行更多的控制，则还是需要利用NSPropertyListSerialization来进行plist对象的序列化操作。</p>
+</li>
+<li><p>写方法，将逐一递归检查plist对象中的所有对象都是合法的plist类型，如果检查失败，将返回NO，表示写文件失败。如果检查通过，将plist对象序列化后写入文件中。</p>
+</li>
+</ol>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a target="_blank" rel="noopener" href="https://developer.apple.com/library/prerelease/content/documentation/Cocoa/Conceptual/PropertyLists/Introduction/Introduction.html#//apple_ref/doc/uid/10000048-CJBGDEGD">Property List Programming Guide</a></p>
+</div><div class="post-meta"><div class="post-meta__tags"></div><i class="icofont-tags"></i><a class="label default" href="/tags/file/">file</a></div></div><nav class="breadcrumb"><a class="extend prev" href="/2015/10/26/iOS/Persistence/Preferences/iOS_Persistence_Preferences/"><i class="icofont-double-left"> </i>Preferences</a><a class="extend next" href="/2015/10/24/iOS/Persistence/Bundle/iOS_Persistence_file_structure/">目录结构<i class="icofont-double-right"></i></a></nav></div><div id="search-container"><div class="padding" id="search-result"><div class="loading"><span> </span><span> </span><span> </span><span> </span><span> </span></div><div id="no-result"></div></div><label id="search-switcher" for="search-checkbox"><i class="icofont-close"></i></label></div></div><div class="col-12 col-md-3 static"><aside class="sidebar padding"><div class="local-search"><span class="sidebar-title">搜索</span><form class="form"><input class="search-input" type="search" name="" placeholder="search"></form></div></aside><aside class="sidebar padding toc-container"><span class="sidebar-title">TOC</span><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E6%A0%BC%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">存储格式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8NSPropertyListSerialization%E8%BF%9B%E8%A1%8Cplist%E8%AF%BB%E5%86%99"><span class="toc-number">3.</span> <span class="toc-text">利用NSPropertyListSerialization进行plist读写</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#plist%E5%86%99"><span class="toc-number">3.1.</span> <span class="toc-text">plist写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#plist%E8%AF%BB"><span class="toc-number">3.2.</span> <span class="toc-text">plist读</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%A9%E7%94%A8NSDictionary%EF%BC%8CNSArray%E8%BF%9B%E8%A1%8Cplist%E8%AF%BB%E5%86%99"><span class="toc-number">4.</span> <span class="toc-text">利用NSDictionary，NSArray进行plist读写</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">5.</span> <span class="toc-text">参考资料</span></a></li></ol></aside><aside class="sidebar padding"><div class="categories"><a class="sidebar-title" href="/categories/">分类</a><ul class="tree"><li class="tree-item">
+                            <input id="cky4ddg4x000ngohta59x4kx7" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg4x000ngohta59x4kx7"></label>
+                            <a href="/categories/Android/">Android
+                            <span class="count">1</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Android/Graddle/">Graddle<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg4z000ugoht7wva974d" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg4z000ugoht7wva974d"></label>
+                            <a href="/categories/Front/">Front
+                            <span class="count">5</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg5y0044goht6bbz7cgl" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5y0044goht6bbz7cgl"></label>
+                            <a href="/categories/Front/CSS/">CSS
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg66004zgohth62w7tbb" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg66004zgohth62w7tbb"></label>
+                            <a href="/categories/Front/CSS/Cheatsheet/">Cheatsheet
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Front/CSS/Cheatsheet/Center/">Center<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Front/CSS/Cheatsheet/Triangle/">Triangle<span class="count">1</span></a>
+                </li></ul>
+                            </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/Front/Hexo/">Hexo<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Front/Webpack/">Webpack<span class="count">2</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg58001jgohtgcjo77pp" class="tree-checkbox" type="checkbox" aria-hidden="true" checked></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg58001jgohtgcjo77pp"></label>
+                            <a href="/categories/iOS/">iOS
+                            <span class="count">26</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Cocoapods/">Cocoapods<span class="count">2</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Draw/">Draw<span class="count">1</span></a>
+                </li><li class="tree-item">
+                            <input id="cky4ddg5w003ogoht4kn2g4st" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5w003ogoht4kn2g4st"></label>
+                            <a href="/categories/iOS/Objective-C/">Objective-C
+                            <span class="count">17</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg670055gohtfbx25yvn" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg670055gohtfbx25yvn"></label>
+                            <a href="/categories/iOS/Objective-C/Essentials/">Essentials
+                            <span class="count">10</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Essentials/Basic/">Basic<span class="count">6</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Essentials/NSObject/">NSObject<span class="count">4</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/iOS/Objective-C/Runtime/">Runtime<span class="count">7</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg62004lgoht57b90zu8" class="tree-checkbox" type="checkbox" aria-hidden="true" checked></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg62004lgoht57b90zu8"></label>
+                            <a href="/categories/iOS/Persistence/">Persistence
+                            <span class="count">3</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Bundle/">Bundle<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Plist/">Plist<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/iOS/Persistence/Preferences/">Preferences<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg5x003xgohtaha32i59" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg5x003xgohtaha32i59"></label>
+                            <a href="/categories/iOS/UIKit/">UIKit
+                            <span class="count">3</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/iOS/UIKit/Interface-Builder/">Interface Builder<span class="count">3</span></a>
+                </li></ul>
+                            </li></ul>
+                            </li><li class="tree-item">
+                            <input id="cky4ddg540019goht0qzabd7g" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg540019goht0qzabd7g"></label>
+                            <a href="/categories/Node-js/">Node-js
+                            <span class="count">4</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                            <input id="cky4ddg62004jgohtgiygcr5x" class="tree-checkbox" type="checkbox" aria-hidden="true" ></input>
+                            <label class="tree-switcher" role="button" for="cky4ddg62004jgohtgiygcr5x"></label>
+                            <a href="/categories/Node-js/JavaScript/">JavaScript
+                            <span class="count">2</span></a>
+                            <ul class="subtree"><li class="tree-item">
+                <a href="/categories/Node-js/JavaScript/Essentials/">Essentials<span class="count">1</span></a>
+                </li><li class="tree-item">
+                <a href="/categories/Node-js/JavaScript/Object/">Object<span class="count">1</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/Node-js/npm/">npm<span class="count">2</span></a>
+                </li></ul>
+                            </li><li class="tree-item">
+                <a href="/categories/NSLog/">NSLog<span class="count">3</span></a>
+                </li></ul></div><div class="tags"><a class="sidebar-title" href="/tags/">标签</a><ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Center-in-CSS/" rel="tag">Center in CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Hexo/" rel="tag">Hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NODE-PATH/" rel="tag">NODE_PATH</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NSObject/" rel="tag">NSObject</a><span class="tag-list-count">5</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Triangle-in-CSS/" rel="tag">Triangle in CSS</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/class/" rel="tag">class</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/cocoapods/" rel="tag">cocoapods</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/compiler/" rel="tag">compiler</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/draw/" rel="tag">draw</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/dyld/" rel="tag">dyld</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/file/" rel="tag">file</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/graddle/" rel="tag">graddle</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/metaclass/" rel="tag">metaclass</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/object/" rel="tag">object</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/prototype/" rel="tag">prototype</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/runtime/" rel="tag">runtime</a><span class="tag-list-count">7</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/self/" rel="tag">self</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/storyboard/" rel="tag">storyboard</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/super/" rel="tag">super</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/this/" rel="tag">this</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/webpack/" rel="tag">webpack</a><span class="tag-list-count">2</span></li></ul></div><div class="links"><a class="sidebar-title" href="#">通道</a><ul class="link-list"><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://developer.apple.com/library">Apple Dev</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://stackoverflow.com/">StackOverflow</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://www.cocoawithlove.com/">CocoaWithLove</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://www.mikeash.com/">MikeAsh</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="http://nshipster.com/">NSHipster</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://www.objc.io/">Objc</a></li><li class="link-list-item"><a class="link-list-link" target="_blank" rel="noopener" href="https://copypastecharacter.com/all-characters">Web Unicode Characters</a></li></ul></div></aside></div></div></div><div class="grid"> <div class="row"> <div class="col-12 col-md-9"> <div class="footer"><div class="copyright"> <span>©</span><a href="/">Command+R.</a><span>Powered by</span><a class="label default" target="_blank" rel="noopener" href="https://hexo.io">Hexo.</a><span>Theme by</span><a class="label default" href="#">Locke. </a></div></div></div></div></div>
+<script src="/js/local-search.js"></script>
+</body></html>
